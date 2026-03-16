@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../lib/prisma"
+  previewFeatures = ["partialIndexes"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Enums for staff classification and component types
+enum StaffType {
+  ACADEMIC
+  NON_ACADEMIC
+}
+
+enum ComponentType {
+  INCOME
+  DEDUCTION
+}
+
+// Employee/Staff model - contains master employee data
+model Employee {
+  id            String    @id @default(cuid())
+  staffNumber   String    @unique
+  fullName      String
+  department    String
+  staffType     StaffType
+  bankName      String?
+  accountNumber String?
+  email         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // ✅ One-to-many: Employee 1 ---> * PayrollRecord
+  payrollRecords PayrollRecord[]
+
+  @@index([staffNumber])
+  @@index([staffType])
+}
+
+// PayrollRun model - represents a monthly payroll batch
+model PayrollRun {
+  id          String    @id @default(cuid())
+  month       Int
+  year        Int
+  uploadedAt  DateTime  @default(now())
+  uploadedBy  String
+  processedAt DateTime?
+  status      String    @default("PENDING")
+  notes       String?
+
+  // ✅ One-to-many: PayrollRun 1 ---> * PayrollRecord
+  // NO onDelete here - it goes on the child side only
+  records PayrollRecord[]
+
+  @@unique([month, year])
+  @@index([year])
+  @@index([status])
+}
+
+// ✅ PayrollRecord model - ALL onDelete actions here
+model PayrollRecord {
+  id           String @id @default(cuid())
+  payrollRunId String // Foreign key to PayrollRun
+  employeeId   String // Foreign key to Employee
+
+  // ✅ Many-to-one: PayrollRecord * ---> 1 PayrollRun
+  payrollRun PayrollRun @relation(fields: [payrollRunId], references: [id], onDelete: Cascade)
+
+  // ✅ Many-to-one: PayrollRecord * ---> 1 Employee  
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  // Financial fields
+  basicSalary     Decimal @db.Decimal(15, 2)
+  grossPay        Decimal @db.Decimal(15, 2)
+  totalDeductions Decimal @db.Decimal(15, 2)
+  netPay          Decimal @db.Decimal(15, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ✅ One-to-many: PayrollRecord 1 ---> * PayrollComponent
+  components PayrollComponent[]
+
+  @@unique([payrollRunId, employeeId])
+  @@index([payrollRunId])
+  @@index([employeeId])
+}
+
+// ✅ PayrollComponent model
+model PayrollComponent {
+  id       String @id @default(cuid())
+  recordId String // Foreign key to PayrollRecord
+
+  // ✅ Many-to-one: PayrollComponent * ---> 1 PayrollRecord
+  record PayrollRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  name   String
+  amount Decimal       @db.Decimal(15, 2)
+  type   ComponentType
+
+  createdAt DateTime @default(now())
+
+  @@index([recordId])
+  @@index([type])
+}
+
+// ValidationError model (unchanged)
+model ValidationError {
+  id           String   @id @default(cuid())
+  payrollRunId String
+  errorType    String
+  staffNumber  String?
+  staffName    String?
+  message      String
+  severity     String   @default("ERROR")
+  createdAt    DateTime @default(now())
+
+  @@index([payrollRunId])
+  @@index([errorType])
+}
