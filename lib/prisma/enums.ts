@@ -9,17 +9,7 @@
 * 🟢 You can import this file directly.
 */
 
-export const StaffType = {
-  ACADEMIC: 'ACADEMIC',
-  NON_ACADEMIC: 'NON_ACADEMIC'
-} as const
-
-export type StaffType = (typeof StaffType)[keyof typeof StaffType]
 
 
-export const ComponentType = {
-  INCOME: 'INCOME',
-  DEDUCTION: 'DEDUCTION'
-} as const
-
-export type ComponentType = (typeof ComponentType)[keyof typeof ComponentType]
+// This file is empty because there are no enums in the schema.
+export {}

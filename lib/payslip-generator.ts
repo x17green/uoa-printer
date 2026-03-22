@@ -25,12 +25,15 @@ export function generatePayslipHTML(data: PayslipData): string {
   });
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-NG', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'NGN',
       minimumFractionDigits: 2,
     }).format(amount);
   };
+
+  const totalIncome = data.earnings.reduce((sum, item) => sum + item.amount, 0);
+  const totalPay = data.netPay;
 
   const earningsHTML = data.earnings
     .map(
@@ -308,6 +311,10 @@ export function generatePayslipHTML(data: PayslipData): string {
             <div class="net-pay-box">
                 <div class="net-pay-label">Net Pay</div>
                 <div class="net-pay-amount">${formatCurrency(data.netPay)}</div>
+                <div style="margin-top: 10px; font-size: 12px; opacity: 0.9;">
+                    <div><strong>All Lnfr:</strong> ${formatCurrency(totalIncome)}</div>
+                    <div><strong>Total Pay:</strong> ${formatCurrency(totalPay)}</div>
+                </div>
             </div>
         </div>
 

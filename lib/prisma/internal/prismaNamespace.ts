@@ -388,7 +388,8 @@ export const ModelName = {
   PayrollRun: 'PayrollRun',
   PayrollRecord: 'PayrollRecord',
   PayrollComponent: 'PayrollComponent',
-  ValidationError: 'ValidationError'
+  ValidationError: 'ValidationError',
+  PayrollRecordComponent: 'PayrollRecordComponent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "employee" | "payrollRun" | "payrollRecord" | "payrollComponent" | "validationError"
+    modelProps: "employee" | "payrollRun" | "payrollRecord" | "payrollComponent" | "validationError" | "payrollRecordComponent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -778,6 +779,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PayrollRecordComponent: {
+      payload: Prisma.$PayrollRecordComponentPayload<ExtArgs>
+      fields: Prisma.PayrollRecordComponentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PayrollRecordComponentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PayrollRecordComponentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload>
+        }
+        findFirst: {
+          args: Prisma.PayrollRecordComponentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PayrollRecordComponentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload>
+        }
+        findMany: {
+          args: Prisma.PayrollRecordComponentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload>[]
+        }
+        create: {
+          args: Prisma.PayrollRecordComponentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload>
+        }
+        createMany: {
+          args: Prisma.PayrollRecordComponentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PayrollRecordComponentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload>[]
+        }
+        delete: {
+          args: Prisma.PayrollRecordComponentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload>
+        }
+        update: {
+          args: Prisma.PayrollRecordComponentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PayrollRecordComponentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PayrollRecordComponentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PayrollRecordComponentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload>[]
+        }
+        upsert: {
+          args: Prisma.PayrollRecordComponentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PayrollRecordComponentPayload>
+        }
+        aggregate: {
+          args: Prisma.PayrollRecordComponentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePayrollRecordComponent>
+        }
+        groupBy: {
+          args: Prisma.PayrollRecordComponentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PayrollRecordComponentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PayrollRecordComponentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PayrollRecordComponentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -820,12 +895,12 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const EmployeeScalarFieldEnum = {
   id: 'id',
   staffNumber: 'staffNumber',
-  fullName: 'fullName',
-  department: 'department',
-  staffType: 'staffType',
-  bankName: 'bankName',
-  accountNumber: 'accountNumber',
+  firstName: 'firstName',
+  lastName: 'lastName',
   email: 'email',
+  department: 'department',
+  position: 'position',
+  salary: 'salary',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -837,11 +912,14 @@ export const PayrollRunScalarFieldEnum = {
   id: 'id',
   month: 'month',
   year: 'year',
-  uploadedAt: 'uploadedAt',
-  uploadedBy: 'uploadedBy',
-  processedAt: 'processedAt',
   status: 'status',
-  notes: 'notes'
+  totalRecords: 'totalRecords',
+  processedRecords: 'processedRecords',
+  errorRecords: 'errorRecords',
+  fileUrl: 'fileUrl',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PayrollRunScalarFieldEnum = (typeof PayrollRunScalarFieldEnum)[keyof typeof PayrollRunScalarFieldEnum]
@@ -852,9 +930,14 @@ export const PayrollRecordScalarFieldEnum = {
   payrollRunId: 'payrollRunId',
   employeeId: 'employeeId',
   basicSalary: 'basicSalary',
-  grossPay: 'grossPay',
+  grossEarnings: 'grossEarnings',
   totalDeductions: 'totalDeductions',
   netPay: 'netPay',
+  taxableIncome: 'taxableIncome',
+  incomeTax: 'incomeTax',
+  pensionContribution: 'pensionContribution',
+  status: 'status',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -864,11 +947,13 @@ export type PayrollRecordScalarFieldEnum = (typeof PayrollRecordScalarFieldEnum)
 
 export const PayrollComponentScalarFieldEnum = {
   id: 'id',
-  recordId: 'recordId',
   name: 'name',
-  amount: 'amount',
   type: 'type',
-  createdAt: 'createdAt'
+  description: 'description',
+  sheetName: 'sheetName',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PayrollComponentScalarFieldEnum = (typeof PayrollComponentScalarFieldEnum)[keyof typeof PayrollComponentScalarFieldEnum]
@@ -877,15 +962,28 @@ export type PayrollComponentScalarFieldEnum = (typeof PayrollComponentScalarFiel
 export const ValidationErrorScalarFieldEnum = {
   id: 'id',
   payrollRunId: 'payrollRunId',
-  errorType: 'errorType',
+  payrollRecordId: 'payrollRecordId',
   staffNumber: 'staffNumber',
-  staffName: 'staffName',
+  type: 'type',
   message: 'message',
   severity: 'severity',
-  createdAt: 'createdAt'
+  isResolved: 'isResolved',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ValidationErrorScalarFieldEnum = (typeof ValidationErrorScalarFieldEnum)[keyof typeof ValidationErrorScalarFieldEnum]
+
+
+export const PayrollRecordComponentScalarFieldEnum = {
+  id: 'id',
+  payrollRecordId: 'payrollRecordId',
+  componentId: 'componentId',
+  amount: 'amount',
+  createdAt: 'createdAt'
+} as const
+
+export type PayrollRecordComponentScalarFieldEnum = (typeof PayrollRecordComponentScalarFieldEnum)[keyof typeof PayrollRecordComponentScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -919,48 +1017,6 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 /**
- * Reference to a field of type 'String'
- */
-export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-    
-
-
-/**
- * Reference to a field of type 'String[]'
- */
-export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-    
-
-
-/**
- * Reference to a field of type 'StaffType'
- */
-export type EnumStaffTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StaffType'>
-    
-
-
-/**
- * Reference to a field of type 'StaffType[]'
- */
-export type ListEnumStaffTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StaffType[]'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime'
- */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -971,6 +1027,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'String'
+ */
+export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
+    
+
+
+/**
+ * Reference to a field of type 'String[]'
+ */
+export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
     
 
 
@@ -989,16 +1059,23 @@ export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
 
 
 /**
- * Reference to a field of type 'ComponentType'
+ * Reference to a field of type 'DateTime'
  */
-export type EnumComponentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentType'>
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
     
 
 
 /**
- * Reference to a field of type 'ComponentType[]'
+ * Reference to a field of type 'DateTime[]'
  */
-export type ListEnumComponentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ComponentType[]'>
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1115,6 +1192,7 @@ export type GlobalOmitConfig = {
   payrollRecord?: Prisma.PayrollRecordOmit
   payrollComponent?: Prisma.PayrollComponentOmit
   validationError?: Prisma.ValidationErrorOmit
+  payrollRecordComponent?: Prisma.PayrollRecordComponentOmit
 }
 
 /* Types for Logging */

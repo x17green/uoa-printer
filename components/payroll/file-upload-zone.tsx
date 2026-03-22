@@ -5,7 +5,12 @@ import { Card, CardBody, CardHeader } from '@heroui/react';
 import { Button } from '@heroui/react';
 
 interface FileUploadZoneProps {
-  onFileSelect: (file: File, month: number, year: number) => void;
+  onFileSelect: (
+    file: File,
+    month: number,
+    year: number,
+    options?: { force?: boolean },
+  ) => void;
   isLoading?: boolean;
 }
 

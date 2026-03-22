@@ -27,91 +27,125 @@ export type AggregatePayrollRun = {
 }
 
 export type PayrollRunAvgAggregateOutputType = {
+  id: number | null
   month: number | null
   year: number | null
+  totalRecords: number | null
+  processedRecords: number | null
+  errorRecords: number | null
 }
 
 export type PayrollRunSumAggregateOutputType = {
+  id: number | null
   month: number | null
   year: number | null
+  totalRecords: number | null
+  processedRecords: number | null
+  errorRecords: number | null
 }
 
 export type PayrollRunMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   month: number | null
   year: number | null
-  uploadedAt: Date | null
-  uploadedBy: string | null
-  processedAt: Date | null
   status: string | null
+  totalRecords: number | null
+  processedRecords: number | null
+  errorRecords: number | null
+  fileUrl: string | null
   notes: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PayrollRunMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   month: number | null
   year: number | null
-  uploadedAt: Date | null
-  uploadedBy: string | null
-  processedAt: Date | null
   status: string | null
+  totalRecords: number | null
+  processedRecords: number | null
+  errorRecords: number | null
+  fileUrl: string | null
   notes: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PayrollRunCountAggregateOutputType = {
   id: number
   month: number
   year: number
-  uploadedAt: number
-  uploadedBy: number
-  processedAt: number
   status: number
+  totalRecords: number
+  processedRecords: number
+  errorRecords: number
+  fileUrl: number
   notes: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
 export type PayrollRunAvgAggregateInputType = {
+  id?: true
   month?: true
   year?: true
+  totalRecords?: true
+  processedRecords?: true
+  errorRecords?: true
 }
 
 export type PayrollRunSumAggregateInputType = {
+  id?: true
   month?: true
   year?: true
+  totalRecords?: true
+  processedRecords?: true
+  errorRecords?: true
 }
 
 export type PayrollRunMinAggregateInputType = {
   id?: true
   month?: true
   year?: true
-  uploadedAt?: true
-  uploadedBy?: true
-  processedAt?: true
   status?: true
+  totalRecords?: true
+  processedRecords?: true
+  errorRecords?: true
+  fileUrl?: true
   notes?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PayrollRunMaxAggregateInputType = {
   id?: true
   month?: true
   year?: true
-  uploadedAt?: true
-  uploadedBy?: true
-  processedAt?: true
   status?: true
+  totalRecords?: true
+  processedRecords?: true
+  errorRecords?: true
+  fileUrl?: true
   notes?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PayrollRunCountAggregateInputType = {
   id?: true
   month?: true
   year?: true
-  uploadedAt?: true
-  uploadedBy?: true
-  processedAt?: true
   status?: true
+  totalRecords?: true
+  processedRecords?: true
+  errorRecords?: true
+  fileUrl?: true
   notes?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -202,14 +236,17 @@ export type PayrollRunGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 export type PayrollRunGroupByOutputType = {
-  id: string
+  id: number
   month: number
   year: number
-  uploadedAt: Date
-  uploadedBy: string
-  processedAt: Date | null
   status: string
+  totalRecords: number | null
+  processedRecords: number | null
+  errorRecords: number | null
+  fileUrl: string | null
   notes: string | null
+  createdAt: Date
+  updatedAt: Date
   _count: PayrollRunCountAggregateOutputType | null
   _avg: PayrollRunAvgAggregateOutputType | null
   _sum: PayrollRunSumAggregateOutputType | null
@@ -236,54 +273,69 @@ export type PayrollRunWhereInput = {
   AND?: Prisma.PayrollRunWhereInput | Prisma.PayrollRunWhereInput[]
   OR?: Prisma.PayrollRunWhereInput[]
   NOT?: Prisma.PayrollRunWhereInput | Prisma.PayrollRunWhereInput[]
-  id?: Prisma.StringFilter<"PayrollRun"> | string
+  id?: Prisma.IntFilter<"PayrollRun"> | number
   month?: Prisma.IntFilter<"PayrollRun"> | number
   year?: Prisma.IntFilter<"PayrollRun"> | number
-  uploadedAt?: Prisma.DateTimeFilter<"PayrollRun"> | Date | string
-  uploadedBy?: Prisma.StringFilter<"PayrollRun"> | string
-  processedAt?: Prisma.DateTimeNullableFilter<"PayrollRun"> | Date | string | null
   status?: Prisma.StringFilter<"PayrollRun"> | string
+  totalRecords?: Prisma.IntNullableFilter<"PayrollRun"> | number | null
+  processedRecords?: Prisma.IntNullableFilter<"PayrollRun"> | number | null
+  errorRecords?: Prisma.IntNullableFilter<"PayrollRun"> | number | null
+  fileUrl?: Prisma.StringNullableFilter<"PayrollRun"> | string | null
   notes?: Prisma.StringNullableFilter<"PayrollRun"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"PayrollRun"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PayrollRun"> | Date | string
   records?: Prisma.PayrollRecordListRelationFilter
+  ValidationError?: Prisma.ValidationErrorListRelationFilter
 }
 
 export type PayrollRunOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   month?: Prisma.SortOrder
   year?: Prisma.SortOrder
-  uploadedAt?: Prisma.SortOrder
-  uploadedBy?: Prisma.SortOrder
-  processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalRecords?: Prisma.SortOrderInput | Prisma.SortOrder
+  processedRecords?: Prisma.SortOrderInput | Prisma.SortOrder
+  errorRecords?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   records?: Prisma.PayrollRecordOrderByRelationAggregateInput
+  ValidationError?: Prisma.ValidationErrorOrderByRelationAggregateInput
 }
 
 export type PayrollRunWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   month_year?: Prisma.PayrollRunMonthYearCompoundUniqueInput
   AND?: Prisma.PayrollRunWhereInput | Prisma.PayrollRunWhereInput[]
   OR?: Prisma.PayrollRunWhereInput[]
   NOT?: Prisma.PayrollRunWhereInput | Prisma.PayrollRunWhereInput[]
   month?: Prisma.IntFilter<"PayrollRun"> | number
   year?: Prisma.IntFilter<"PayrollRun"> | number
-  uploadedAt?: Prisma.DateTimeFilter<"PayrollRun"> | Date | string
-  uploadedBy?: Prisma.StringFilter<"PayrollRun"> | string
-  processedAt?: Prisma.DateTimeNullableFilter<"PayrollRun"> | Date | string | null
   status?: Prisma.StringFilter<"PayrollRun"> | string
+  totalRecords?: Prisma.IntNullableFilter<"PayrollRun"> | number | null
+  processedRecords?: Prisma.IntNullableFilter<"PayrollRun"> | number | null
+  errorRecords?: Prisma.IntNullableFilter<"PayrollRun"> | number | null
+  fileUrl?: Prisma.StringNullableFilter<"PayrollRun"> | string | null
   notes?: Prisma.StringNullableFilter<"PayrollRun"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"PayrollRun"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"PayrollRun"> | Date | string
   records?: Prisma.PayrollRecordListRelationFilter
+  ValidationError?: Prisma.ValidationErrorListRelationFilter
 }, "id" | "month_year">
 
 export type PayrollRunOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   month?: Prisma.SortOrder
   year?: Prisma.SortOrder
-  uploadedAt?: Prisma.SortOrder
-  uploadedBy?: Prisma.SortOrder
-  processedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalRecords?: Prisma.SortOrderInput | Prisma.SortOrder
+  processedRecords?: Prisma.SortOrderInput | Prisma.SortOrder
+  errorRecords?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.PayrollRunCountOrderByAggregateInput
   _avg?: Prisma.PayrollRunAvgOrderByAggregateInput
   _max?: Prisma.PayrollRunMaxOrderByAggregateInput
@@ -295,95 +347,120 @@ export type PayrollRunScalarWhereWithAggregatesInput = {
   AND?: Prisma.PayrollRunScalarWhereWithAggregatesInput | Prisma.PayrollRunScalarWhereWithAggregatesInput[]
   OR?: Prisma.PayrollRunScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PayrollRunScalarWhereWithAggregatesInput | Prisma.PayrollRunScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"PayrollRun"> | string
+  id?: Prisma.IntWithAggregatesFilter<"PayrollRun"> | number
   month?: Prisma.IntWithAggregatesFilter<"PayrollRun"> | number
   year?: Prisma.IntWithAggregatesFilter<"PayrollRun"> | number
-  uploadedAt?: Prisma.DateTimeWithAggregatesFilter<"PayrollRun"> | Date | string
-  uploadedBy?: Prisma.StringWithAggregatesFilter<"PayrollRun"> | string
-  processedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PayrollRun"> | Date | string | null
   status?: Prisma.StringWithAggregatesFilter<"PayrollRun"> | string
+  totalRecords?: Prisma.IntNullableWithAggregatesFilter<"PayrollRun"> | number | null
+  processedRecords?: Prisma.IntNullableWithAggregatesFilter<"PayrollRun"> | number | null
+  errorRecords?: Prisma.IntNullableWithAggregatesFilter<"PayrollRun"> | number | null
+  fileUrl?: Prisma.StringNullableWithAggregatesFilter<"PayrollRun"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"PayrollRun"> | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"PayrollRun"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PayrollRun"> | Date | string
 }
 
 export type PayrollRunCreateInput = {
-  id?: string
   month: number
   year: number
-  uploadedAt?: Date | string
-  uploadedBy: string
-  processedAt?: Date | string | null
   status?: string
+  totalRecords?: number | null
+  processedRecords?: number | null
+  errorRecords?: number | null
+  fileUrl?: string | null
   notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   records?: Prisma.PayrollRecordCreateNestedManyWithoutPayrollRunInput
+  ValidationError?: Prisma.ValidationErrorCreateNestedManyWithoutPayrollRunInput
 }
 
 export type PayrollRunUncheckedCreateInput = {
-  id?: string
+  id?: number
   month: number
   year: number
-  uploadedAt?: Date | string
-  uploadedBy: string
-  processedAt?: Date | string | null
   status?: string
+  totalRecords?: number | null
+  processedRecords?: number | null
+  errorRecords?: number | null
+  fileUrl?: string | null
   notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   records?: Prisma.PayrollRecordUncheckedCreateNestedManyWithoutPayrollRunInput
+  ValidationError?: Prisma.ValidationErrorUncheckedCreateNestedManyWithoutPayrollRunInput
 }
 
 export type PayrollRunUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   month?: Prisma.IntFieldUpdateOperationsInput | number
   year?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  processedRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  errorRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   records?: Prisma.PayrollRecordUpdateManyWithoutPayrollRunNestedInput
+  ValidationError?: Prisma.ValidationErrorUpdateManyWithoutPayrollRunNestedInput
 }
 
 export type PayrollRunUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   month?: Prisma.IntFieldUpdateOperationsInput | number
   year?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  processedRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  errorRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   records?: Prisma.PayrollRecordUncheckedUpdateManyWithoutPayrollRunNestedInput
+  ValidationError?: Prisma.ValidationErrorUncheckedUpdateManyWithoutPayrollRunNestedInput
 }
 
 export type PayrollRunCreateManyInput = {
-  id?: string
+  id?: number
   month: number
   year: number
-  uploadedAt?: Date | string
-  uploadedBy: string
-  processedAt?: Date | string | null
   status?: string
+  totalRecords?: number | null
+  processedRecords?: number | null
+  errorRecords?: number | null
+  fileUrl?: string | null
   notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type PayrollRunUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   month?: Prisma.IntFieldUpdateOperationsInput | number
   year?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  processedRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  errorRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PayrollRunUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   month?: Prisma.IntFieldUpdateOperationsInput | number
   year?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  processedRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  errorRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PayrollRunMonthYearCompoundUniqueInput = {
@@ -395,43 +472,60 @@ export type PayrollRunCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   month?: Prisma.SortOrder
   year?: Prisma.SortOrder
-  uploadedAt?: Prisma.SortOrder
-  uploadedBy?: Prisma.SortOrder
-  processedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalRecords?: Prisma.SortOrder
+  processedRecords?: Prisma.SortOrder
+  errorRecords?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PayrollRunAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   month?: Prisma.SortOrder
   year?: Prisma.SortOrder
+  totalRecords?: Prisma.SortOrder
+  processedRecords?: Prisma.SortOrder
+  errorRecords?: Prisma.SortOrder
 }
 
 export type PayrollRunMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   month?: Prisma.SortOrder
   year?: Prisma.SortOrder
-  uploadedAt?: Prisma.SortOrder
-  uploadedBy?: Prisma.SortOrder
-  processedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalRecords?: Prisma.SortOrder
+  processedRecords?: Prisma.SortOrder
+  errorRecords?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PayrollRunMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   month?: Prisma.SortOrder
   year?: Prisma.SortOrder
-  uploadedAt?: Prisma.SortOrder
-  uploadedBy?: Prisma.SortOrder
-  processedAt?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalRecords?: Prisma.SortOrder
+  processedRecords?: Prisma.SortOrder
+  errorRecords?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PayrollRunSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
   month?: Prisma.SortOrder
   year?: Prisma.SortOrder
+  totalRecords?: Prisma.SortOrder
+  processedRecords?: Prisma.SortOrder
+  errorRecords?: Prisma.SortOrder
 }
 
 export type PayrollRunScalarRelationFilter = {
@@ -439,16 +533,12 @@ export type PayrollRunScalarRelationFilter = {
   isNot?: Prisma.PayrollRunWhereInput
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
 }
 
 export type PayrollRunCreateNestedOneWithoutRecordsInput = {
@@ -465,26 +555,47 @@ export type PayrollRunUpdateOneRequiredWithoutRecordsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PayrollRunUpdateToOneWithWhereWithoutRecordsInput, Prisma.PayrollRunUpdateWithoutRecordsInput>, Prisma.PayrollRunUncheckedUpdateWithoutRecordsInput>
 }
 
+export type PayrollRunCreateNestedOneWithoutValidationErrorInput = {
+  create?: Prisma.XOR<Prisma.PayrollRunCreateWithoutValidationErrorInput, Prisma.PayrollRunUncheckedCreateWithoutValidationErrorInput>
+  connectOrCreate?: Prisma.PayrollRunCreateOrConnectWithoutValidationErrorInput
+  connect?: Prisma.PayrollRunWhereUniqueInput
+}
+
+export type PayrollRunUpdateOneRequiredWithoutValidationErrorNestedInput = {
+  create?: Prisma.XOR<Prisma.PayrollRunCreateWithoutValidationErrorInput, Prisma.PayrollRunUncheckedCreateWithoutValidationErrorInput>
+  connectOrCreate?: Prisma.PayrollRunCreateOrConnectWithoutValidationErrorInput
+  upsert?: Prisma.PayrollRunUpsertWithoutValidationErrorInput
+  connect?: Prisma.PayrollRunWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PayrollRunUpdateToOneWithWhereWithoutValidationErrorInput, Prisma.PayrollRunUpdateWithoutValidationErrorInput>, Prisma.PayrollRunUncheckedUpdateWithoutValidationErrorInput>
+}
+
 export type PayrollRunCreateWithoutRecordsInput = {
-  id?: string
   month: number
   year: number
-  uploadedAt?: Date | string
-  uploadedBy: string
-  processedAt?: Date | string | null
   status?: string
+  totalRecords?: number | null
+  processedRecords?: number | null
+  errorRecords?: number | null
+  fileUrl?: string | null
   notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ValidationError?: Prisma.ValidationErrorCreateNestedManyWithoutPayrollRunInput
 }
 
 export type PayrollRunUncheckedCreateWithoutRecordsInput = {
-  id?: string
+  id?: number
   month: number
   year: number
-  uploadedAt?: Date | string
-  uploadedBy: string
-  processedAt?: Date | string | null
   status?: string
+  totalRecords?: number | null
+  processedRecords?: number | null
+  errorRecords?: number | null
+  fileUrl?: string | null
   notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  ValidationError?: Prisma.ValidationErrorUncheckedCreateNestedManyWithoutPayrollRunInput
 }
 
 export type PayrollRunCreateOrConnectWithoutRecordsInput = {
@@ -504,25 +615,106 @@ export type PayrollRunUpdateToOneWithWhereWithoutRecordsInput = {
 }
 
 export type PayrollRunUpdateWithoutRecordsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   month?: Prisma.IntFieldUpdateOperationsInput | number
   year?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  processedRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  errorRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ValidationError?: Prisma.ValidationErrorUpdateManyWithoutPayrollRunNestedInput
 }
 
 export type PayrollRunUncheckedUpdateWithoutRecordsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   month?: Prisma.IntFieldUpdateOperationsInput | number
   year?: Prisma.IntFieldUpdateOperationsInput | number
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  uploadedBy?: Prisma.StringFieldUpdateOperationsInput | string
-  processedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  processedRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  errorRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ValidationError?: Prisma.ValidationErrorUncheckedUpdateManyWithoutPayrollRunNestedInput
+}
+
+export type PayrollRunCreateWithoutValidationErrorInput = {
+  month: number
+  year: number
+  status?: string
+  totalRecords?: number | null
+  processedRecords?: number | null
+  errorRecords?: number | null
+  fileUrl?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  records?: Prisma.PayrollRecordCreateNestedManyWithoutPayrollRunInput
+}
+
+export type PayrollRunUncheckedCreateWithoutValidationErrorInput = {
+  id?: number
+  month: number
+  year: number
+  status?: string
+  totalRecords?: number | null
+  processedRecords?: number | null
+  errorRecords?: number | null
+  fileUrl?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  records?: Prisma.PayrollRecordUncheckedCreateNestedManyWithoutPayrollRunInput
+}
+
+export type PayrollRunCreateOrConnectWithoutValidationErrorInput = {
+  where: Prisma.PayrollRunWhereUniqueInput
+  create: Prisma.XOR<Prisma.PayrollRunCreateWithoutValidationErrorInput, Prisma.PayrollRunUncheckedCreateWithoutValidationErrorInput>
+}
+
+export type PayrollRunUpsertWithoutValidationErrorInput = {
+  update: Prisma.XOR<Prisma.PayrollRunUpdateWithoutValidationErrorInput, Prisma.PayrollRunUncheckedUpdateWithoutValidationErrorInput>
+  create: Prisma.XOR<Prisma.PayrollRunCreateWithoutValidationErrorInput, Prisma.PayrollRunUncheckedCreateWithoutValidationErrorInput>
+  where?: Prisma.PayrollRunWhereInput
+}
+
+export type PayrollRunUpdateToOneWithWhereWithoutValidationErrorInput = {
+  where?: Prisma.PayrollRunWhereInput
+  data: Prisma.XOR<Prisma.PayrollRunUpdateWithoutValidationErrorInput, Prisma.PayrollRunUncheckedUpdateWithoutValidationErrorInput>
+}
+
+export type PayrollRunUpdateWithoutValidationErrorInput = {
+  month?: Prisma.IntFieldUpdateOperationsInput | number
+  year?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  processedRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  errorRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  records?: Prisma.PayrollRecordUpdateManyWithoutPayrollRunNestedInput
+}
+
+export type PayrollRunUncheckedUpdateWithoutValidationErrorInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  month?: Prisma.IntFieldUpdateOperationsInput | number
+  year?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  processedRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  errorRecords?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  records?: Prisma.PayrollRecordUncheckedUpdateManyWithoutPayrollRunNestedInput
 }
 
 
@@ -532,10 +724,12 @@ export type PayrollRunUncheckedUpdateWithoutRecordsInput = {
 
 export type PayrollRunCountOutputType = {
   records: number
+  ValidationError: number
 }
 
 export type PayrollRunCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   records?: boolean | PayrollRunCountOutputTypeCountRecordsArgs
+  ValidationError?: boolean | PayrollRunCountOutputTypeCountValidationErrorArgs
 }
 
 /**
@@ -555,17 +749,28 @@ export type PayrollRunCountOutputTypeCountRecordsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.PayrollRecordWhereInput
 }
 
+/**
+ * PayrollRunCountOutputType without action
+ */
+export type PayrollRunCountOutputTypeCountValidationErrorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ValidationErrorWhereInput
+}
+
 
 export type PayrollRunSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   month?: boolean
   year?: boolean
-  uploadedAt?: boolean
-  uploadedBy?: boolean
-  processedAt?: boolean
   status?: boolean
+  totalRecords?: boolean
+  processedRecords?: boolean
+  errorRecords?: boolean
+  fileUrl?: boolean
   notes?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   records?: boolean | Prisma.PayrollRun$recordsArgs<ExtArgs>
+  ValidationError?: boolean | Prisma.PayrollRun$ValidationErrorArgs<ExtArgs>
   _count?: boolean | Prisma.PayrollRunCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payrollRun"]>
 
@@ -573,38 +778,48 @@ export type PayrollRunSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   month?: boolean
   year?: boolean
-  uploadedAt?: boolean
-  uploadedBy?: boolean
-  processedAt?: boolean
   status?: boolean
+  totalRecords?: boolean
+  processedRecords?: boolean
+  errorRecords?: boolean
+  fileUrl?: boolean
   notes?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["payrollRun"]>
 
 export type PayrollRunSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   month?: boolean
   year?: boolean
-  uploadedAt?: boolean
-  uploadedBy?: boolean
-  processedAt?: boolean
   status?: boolean
+  totalRecords?: boolean
+  processedRecords?: boolean
+  errorRecords?: boolean
+  fileUrl?: boolean
   notes?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }, ExtArgs["result"]["payrollRun"]>
 
 export type PayrollRunSelectScalar = {
   id?: boolean
   month?: boolean
   year?: boolean
-  uploadedAt?: boolean
-  uploadedBy?: boolean
-  processedAt?: boolean
   status?: boolean
+  totalRecords?: boolean
+  processedRecords?: boolean
+  errorRecords?: boolean
+  fileUrl?: boolean
   notes?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type PayrollRunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "month" | "year" | "uploadedAt" | "uploadedBy" | "processedAt" | "status" | "notes", ExtArgs["result"]["payrollRun"]>
+export type PayrollRunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "month" | "year" | "status" | "totalRecords" | "processedRecords" | "errorRecords" | "fileUrl" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollRun"]>
 export type PayrollRunInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   records?: boolean | Prisma.PayrollRun$recordsArgs<ExtArgs>
+  ValidationError?: boolean | Prisma.PayrollRun$ValidationErrorArgs<ExtArgs>
   _count?: boolean | Prisma.PayrollRunCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PayrollRunIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -614,16 +829,20 @@ export type $PayrollRunPayload<ExtArgs extends runtime.Types.Extensions.Internal
   name: "PayrollRun"
   objects: {
     records: Prisma.$PayrollRecordPayload<ExtArgs>[]
+    ValidationError: Prisma.$ValidationErrorPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     month: number
     year: number
-    uploadedAt: Date
-    uploadedBy: string
-    processedAt: Date | null
     status: string
+    totalRecords: number | null
+    processedRecords: number | null
+    errorRecords: number | null
+    fileUrl: string | null
     notes: string | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["payrollRun"]>
   composites: {}
 }
@@ -1019,6 +1238,7 @@ readonly fields: PayrollRunFieldRefs;
 export interface Prisma__PayrollRunClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   records<T extends Prisma.PayrollRun$recordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayrollRun$recordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayrollRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ValidationError<T extends Prisma.PayrollRun$ValidationErrorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayrollRun$ValidationErrorArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ValidationErrorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1048,14 +1268,17 @@ export interface Prisma__PayrollRunClient<T, Null = never, ExtArgs extends runti
  * Fields of the PayrollRun model
  */
 export interface PayrollRunFieldRefs {
-  readonly id: Prisma.FieldRef<"PayrollRun", 'String'>
+  readonly id: Prisma.FieldRef<"PayrollRun", 'Int'>
   readonly month: Prisma.FieldRef<"PayrollRun", 'Int'>
   readonly year: Prisma.FieldRef<"PayrollRun", 'Int'>
-  readonly uploadedAt: Prisma.FieldRef<"PayrollRun", 'DateTime'>
-  readonly uploadedBy: Prisma.FieldRef<"PayrollRun", 'String'>
-  readonly processedAt: Prisma.FieldRef<"PayrollRun", 'DateTime'>
   readonly status: Prisma.FieldRef<"PayrollRun", 'String'>
+  readonly totalRecords: Prisma.FieldRef<"PayrollRun", 'Int'>
+  readonly processedRecords: Prisma.FieldRef<"PayrollRun", 'Int'>
+  readonly errorRecords: Prisma.FieldRef<"PayrollRun", 'Int'>
+  readonly fileUrl: Prisma.FieldRef<"PayrollRun", 'String'>
   readonly notes: Prisma.FieldRef<"PayrollRun", 'String'>
+  readonly createdAt: Prisma.FieldRef<"PayrollRun", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"PayrollRun", 'DateTime'>
 }
     
 
@@ -1470,6 +1693,30 @@ export type PayrollRun$recordsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.PayrollRecordScalarFieldEnum | Prisma.PayrollRecordScalarFieldEnum[]
+}
+
+/**
+ * PayrollRun.ValidationError
+ */
+export type PayrollRun$ValidationErrorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ValidationError
+   */
+  select?: Prisma.ValidationErrorSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ValidationError
+   */
+  omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
+  where?: Prisma.ValidationErrorWhereInput
+  orderBy?: Prisma.ValidationErrorOrderByWithRelationInput | Prisma.ValidationErrorOrderByWithRelationInput[]
+  cursor?: Prisma.ValidationErrorWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ValidationErrorScalarFieldEnum | Prisma.ValidationErrorScalarFieldEnum[]
 }
 
 /**

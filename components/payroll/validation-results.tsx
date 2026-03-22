@@ -57,6 +57,7 @@ export function ValidationResults({ errors, totalRecords }: ValidationResultsPro
         <Table aria-label="Validation errors">
           <TableHeader>
             <TableColumn>TYPE</TableColumn>
+            <TableColumn>SHEET / ROW</TableColumn>
             <TableColumn>STAFF</TableColumn>
             <TableColumn>MESSAGE</TableColumn>
             <TableColumn>SEVERITY</TableColumn>
@@ -66,6 +67,16 @@ export function ValidationResults({ errors, totalRecords }: ValidationResultsPro
               <TableRow key={idx}>
                 <TableCell>
                   <span className="text-xs font-mono">{error.type}</span>
+                </TableCell>
+                <TableCell>
+                  <div>
+                    <p className="text-sm">
+                      {error.sheet || "-"} / {error.row ?? "-"}
+                    </p>
+                    {error.column && (
+                      <p className="text-xs text-muted-foreground">{error.column}</p>
+                    )}
+                  </div>
                 </TableCell>
                 <TableCell>
                   <div>

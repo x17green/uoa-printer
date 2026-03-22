@@ -27,75 +27,87 @@ export type AggregatePayrollComponent = {
 }
 
 export type PayrollComponentAvgAggregateOutputType = {
-  amount: runtime.Decimal | null
+  id: number | null
 }
 
 export type PayrollComponentSumAggregateOutputType = {
-  amount: runtime.Decimal | null
+  id: number | null
 }
 
 export type PayrollComponentMinAggregateOutputType = {
-  id: string | null
-  recordId: string | null
+  id: number | null
   name: string | null
-  amount: runtime.Decimal | null
-  type: $Enums.ComponentType | null
+  type: string | null
+  description: string | null
+  sheetName: string | null
+  isActive: boolean | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PayrollComponentMaxAggregateOutputType = {
-  id: string | null
-  recordId: string | null
+  id: number | null
   name: string | null
-  amount: runtime.Decimal | null
-  type: $Enums.ComponentType | null
+  type: string | null
+  description: string | null
+  sheetName: string | null
+  isActive: boolean | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PayrollComponentCountAggregateOutputType = {
   id: number
-  recordId: number
   name: number
-  amount: number
   type: number
+  description: number
+  sheetName: number
+  isActive: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
 export type PayrollComponentAvgAggregateInputType = {
-  amount?: true
+  id?: true
 }
 
 export type PayrollComponentSumAggregateInputType = {
-  amount?: true
+  id?: true
 }
 
 export type PayrollComponentMinAggregateInputType = {
   id?: true
-  recordId?: true
   name?: true
-  amount?: true
   type?: true
+  description?: true
+  sheetName?: true
+  isActive?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type PayrollComponentMaxAggregateInputType = {
   id?: true
-  recordId?: true
   name?: true
-  amount?: true
   type?: true
+  description?: true
+  sheetName?: true
+  isActive?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type PayrollComponentCountAggregateInputType = {
   id?: true
-  recordId?: true
   name?: true
-  amount?: true
   type?: true
+  description?: true
+  sheetName?: true
+  isActive?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -186,12 +198,14 @@ export type PayrollComponentGroupByArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 export type PayrollComponentGroupByOutputType = {
-  id: string
-  recordId: string
+  id: number
   name: string
-  amount: runtime.Decimal
-  type: $Enums.ComponentType
+  type: string
+  description: string | null
+  sheetName: string | null
+  isActive: boolean | null
   createdAt: Date
+  updatedAt: Date
   _count: PayrollComponentCountAggregateOutputType | null
   _avg: PayrollComponentAvgAggregateOutputType | null
   _sum: PayrollComponentSumAggregateOutputType | null
@@ -218,45 +232,53 @@ export type PayrollComponentWhereInput = {
   AND?: Prisma.PayrollComponentWhereInput | Prisma.PayrollComponentWhereInput[]
   OR?: Prisma.PayrollComponentWhereInput[]
   NOT?: Prisma.PayrollComponentWhereInput | Prisma.PayrollComponentWhereInput[]
-  id?: Prisma.StringFilter<"PayrollComponent"> | string
-  recordId?: Prisma.StringFilter<"PayrollComponent"> | string
+  id?: Prisma.IntFilter<"PayrollComponent"> | number
   name?: Prisma.StringFilter<"PayrollComponent"> | string
-  amount?: Prisma.DecimalFilter<"PayrollComponent"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFilter<"PayrollComponent"> | $Enums.ComponentType
+  type?: Prisma.StringFilter<"PayrollComponent"> | string
+  description?: Prisma.StringNullableFilter<"PayrollComponent"> | string | null
+  sheetName?: Prisma.StringNullableFilter<"PayrollComponent"> | string | null
+  isActive?: Prisma.BoolNullableFilter<"PayrollComponent"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"PayrollComponent"> | Date | string
-  record?: Prisma.XOR<Prisma.PayrollRecordScalarRelationFilter, Prisma.PayrollRecordWhereInput>
+  updatedAt?: Prisma.DateTimeFilter<"PayrollComponent"> | Date | string
+  PayrollRecordComponent?: Prisma.PayrollRecordComponentListRelationFilter
 }
 
 export type PayrollComponentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  recordId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  sheetName?: Prisma.SortOrderInput | Prisma.SortOrder
+  isActive?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  record?: Prisma.PayrollRecordOrderByWithRelationInput
+  updatedAt?: Prisma.SortOrder
+  PayrollRecordComponent?: Prisma.PayrollRecordComponentOrderByRelationAggregateInput
 }
 
 export type PayrollComponentWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   AND?: Prisma.PayrollComponentWhereInput | Prisma.PayrollComponentWhereInput[]
   OR?: Prisma.PayrollComponentWhereInput[]
   NOT?: Prisma.PayrollComponentWhereInput | Prisma.PayrollComponentWhereInput[]
-  recordId?: Prisma.StringFilter<"PayrollComponent"> | string
   name?: Prisma.StringFilter<"PayrollComponent"> | string
-  amount?: Prisma.DecimalFilter<"PayrollComponent"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFilter<"PayrollComponent"> | $Enums.ComponentType
+  type?: Prisma.StringFilter<"PayrollComponent"> | string
+  description?: Prisma.StringNullableFilter<"PayrollComponent"> | string | null
+  sheetName?: Prisma.StringNullableFilter<"PayrollComponent"> | string | null
+  isActive?: Prisma.BoolNullableFilter<"PayrollComponent"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"PayrollComponent"> | Date | string
-  record?: Prisma.XOR<Prisma.PayrollRecordScalarRelationFilter, Prisma.PayrollRecordWhereInput>
+  updatedAt?: Prisma.DateTimeFilter<"PayrollComponent"> | Date | string
+  PayrollRecordComponent?: Prisma.PayrollRecordComponentListRelationFilter
 }, "id">
 
 export type PayrollComponentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  recordId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
+  sheetName?: Prisma.SortOrderInput | Prisma.SortOrder
+  isActive?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.PayrollComponentCountOrderByAggregateInput
   _avg?: Prisma.PayrollComponentAvgOrderByAggregateInput
   _max?: Prisma.PayrollComponentMaxOrderByAggregateInput
@@ -268,317 +290,315 @@ export type PayrollComponentScalarWhereWithAggregatesInput = {
   AND?: Prisma.PayrollComponentScalarWhereWithAggregatesInput | Prisma.PayrollComponentScalarWhereWithAggregatesInput[]
   OR?: Prisma.PayrollComponentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PayrollComponentScalarWhereWithAggregatesInput | Prisma.PayrollComponentScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"PayrollComponent"> | string
-  recordId?: Prisma.StringWithAggregatesFilter<"PayrollComponent"> | string
+  id?: Prisma.IntWithAggregatesFilter<"PayrollComponent"> | number
   name?: Prisma.StringWithAggregatesFilter<"PayrollComponent"> | string
-  amount?: Prisma.DecimalWithAggregatesFilter<"PayrollComponent"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeWithAggregatesFilter<"PayrollComponent"> | $Enums.ComponentType
+  type?: Prisma.StringWithAggregatesFilter<"PayrollComponent"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"PayrollComponent"> | string | null
+  sheetName?: Prisma.StringNullableWithAggregatesFilter<"PayrollComponent"> | string | null
+  isActive?: Prisma.BoolNullableWithAggregatesFilter<"PayrollComponent"> | boolean | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PayrollComponent"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PayrollComponent"> | Date | string
 }
 
 export type PayrollComponentCreateInput = {
-  id?: string
   name: string
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  type: $Enums.ComponentType
+  type: string
+  description?: string | null
+  sheetName?: string | null
+  isActive?: boolean | null
   createdAt?: Date | string
-  record: Prisma.PayrollRecordCreateNestedOneWithoutComponentsInput
+  updatedAt?: Date | string
+  PayrollRecordComponent?: Prisma.PayrollRecordComponentCreateNestedManyWithoutPayrollComponentInput
 }
 
 export type PayrollComponentUncheckedCreateInput = {
-  id?: string
-  recordId: string
+  id?: number
   name: string
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  type: $Enums.ComponentType
+  type: string
+  description?: string | null
+  sheetName?: string | null
+  isActive?: boolean | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  PayrollRecordComponent?: Prisma.PayrollRecordComponentUncheckedCreateNestedManyWithoutPayrollComponentInput
 }
 
 export type PayrollComponentUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sheetName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  record?: Prisma.PayrollRecordUpdateOneRequiredWithoutComponentsNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  PayrollRecordComponent?: Prisma.PayrollRecordComponentUpdateManyWithoutPayrollComponentNestedInput
 }
 
 export type PayrollComponentUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  recordId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sheetName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  PayrollRecordComponent?: Prisma.PayrollRecordComponentUncheckedUpdateManyWithoutPayrollComponentNestedInput
 }
 
 export type PayrollComponentCreateManyInput = {
-  id?: string
-  recordId: string
+  id?: number
   name: string
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  type: $Enums.ComponentType
+  type: string
+  description?: string | null
+  sheetName?: string | null
+  isActive?: boolean | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type PayrollComponentUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sheetName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PayrollComponentUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  recordId?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sheetName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type PayrollComponentListRelationFilter = {
-  every?: Prisma.PayrollComponentWhereInput
-  some?: Prisma.PayrollComponentWhereInput
-  none?: Prisma.PayrollComponentWhereInput
-}
-
-export type PayrollComponentOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PayrollComponentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  recordId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  sheetName?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PayrollComponentAvgOrderByAggregateInput = {
-  amount?: Prisma.SortOrder
+  id?: Prisma.SortOrder
 }
 
 export type PayrollComponentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  recordId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  sheetName?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PayrollComponentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  recordId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  sheetName?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PayrollComponentSumOrderByAggregateInput = {
-  amount?: Prisma.SortOrder
+  id?: Prisma.SortOrder
 }
 
-export type PayrollComponentCreateNestedManyWithoutRecordInput = {
-  create?: Prisma.XOR<Prisma.PayrollComponentCreateWithoutRecordInput, Prisma.PayrollComponentUncheckedCreateWithoutRecordInput> | Prisma.PayrollComponentCreateWithoutRecordInput[] | Prisma.PayrollComponentUncheckedCreateWithoutRecordInput[]
-  connectOrCreate?: Prisma.PayrollComponentCreateOrConnectWithoutRecordInput | Prisma.PayrollComponentCreateOrConnectWithoutRecordInput[]
-  createMany?: Prisma.PayrollComponentCreateManyRecordInputEnvelope
-  connect?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
+export type PayrollComponentScalarRelationFilter = {
+  is?: Prisma.PayrollComponentWhereInput
+  isNot?: Prisma.PayrollComponentWhereInput
 }
 
-export type PayrollComponentUncheckedCreateNestedManyWithoutRecordInput = {
-  create?: Prisma.XOR<Prisma.PayrollComponentCreateWithoutRecordInput, Prisma.PayrollComponentUncheckedCreateWithoutRecordInput> | Prisma.PayrollComponentCreateWithoutRecordInput[] | Prisma.PayrollComponentUncheckedCreateWithoutRecordInput[]
-  connectOrCreate?: Prisma.PayrollComponentCreateOrConnectWithoutRecordInput | Prisma.PayrollComponentCreateOrConnectWithoutRecordInput[]
-  createMany?: Prisma.PayrollComponentCreateManyRecordInputEnvelope
-  connect?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
 }
 
-export type PayrollComponentUpdateManyWithoutRecordNestedInput = {
-  create?: Prisma.XOR<Prisma.PayrollComponentCreateWithoutRecordInput, Prisma.PayrollComponentUncheckedCreateWithoutRecordInput> | Prisma.PayrollComponentCreateWithoutRecordInput[] | Prisma.PayrollComponentUncheckedCreateWithoutRecordInput[]
-  connectOrCreate?: Prisma.PayrollComponentCreateOrConnectWithoutRecordInput | Prisma.PayrollComponentCreateOrConnectWithoutRecordInput[]
-  upsert?: Prisma.PayrollComponentUpsertWithWhereUniqueWithoutRecordInput | Prisma.PayrollComponentUpsertWithWhereUniqueWithoutRecordInput[]
-  createMany?: Prisma.PayrollComponentCreateManyRecordInputEnvelope
-  set?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
-  disconnect?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
-  delete?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
-  connect?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
-  update?: Prisma.PayrollComponentUpdateWithWhereUniqueWithoutRecordInput | Prisma.PayrollComponentUpdateWithWhereUniqueWithoutRecordInput[]
-  updateMany?: Prisma.PayrollComponentUpdateManyWithWhereWithoutRecordInput | Prisma.PayrollComponentUpdateManyWithWhereWithoutRecordInput[]
-  deleteMany?: Prisma.PayrollComponentScalarWhereInput | Prisma.PayrollComponentScalarWhereInput[]
+export type PayrollComponentCreateNestedOneWithoutPayrollRecordComponentInput = {
+  create?: Prisma.XOR<Prisma.PayrollComponentCreateWithoutPayrollRecordComponentInput, Prisma.PayrollComponentUncheckedCreateWithoutPayrollRecordComponentInput>
+  connectOrCreate?: Prisma.PayrollComponentCreateOrConnectWithoutPayrollRecordComponentInput
+  connect?: Prisma.PayrollComponentWhereUniqueInput
 }
 
-export type PayrollComponentUncheckedUpdateManyWithoutRecordNestedInput = {
-  create?: Prisma.XOR<Prisma.PayrollComponentCreateWithoutRecordInput, Prisma.PayrollComponentUncheckedCreateWithoutRecordInput> | Prisma.PayrollComponentCreateWithoutRecordInput[] | Prisma.PayrollComponentUncheckedCreateWithoutRecordInput[]
-  connectOrCreate?: Prisma.PayrollComponentCreateOrConnectWithoutRecordInput | Prisma.PayrollComponentCreateOrConnectWithoutRecordInput[]
-  upsert?: Prisma.PayrollComponentUpsertWithWhereUniqueWithoutRecordInput | Prisma.PayrollComponentUpsertWithWhereUniqueWithoutRecordInput[]
-  createMany?: Prisma.PayrollComponentCreateManyRecordInputEnvelope
-  set?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
-  disconnect?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
-  delete?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
-  connect?: Prisma.PayrollComponentWhereUniqueInput | Prisma.PayrollComponentWhereUniqueInput[]
-  update?: Prisma.PayrollComponentUpdateWithWhereUniqueWithoutRecordInput | Prisma.PayrollComponentUpdateWithWhereUniqueWithoutRecordInput[]
-  updateMany?: Prisma.PayrollComponentUpdateManyWithWhereWithoutRecordInput | Prisma.PayrollComponentUpdateManyWithWhereWithoutRecordInput[]
-  deleteMany?: Prisma.PayrollComponentScalarWhereInput | Prisma.PayrollComponentScalarWhereInput[]
+export type PayrollComponentUpdateOneRequiredWithoutPayrollRecordComponentNestedInput = {
+  create?: Prisma.XOR<Prisma.PayrollComponentCreateWithoutPayrollRecordComponentInput, Prisma.PayrollComponentUncheckedCreateWithoutPayrollRecordComponentInput>
+  connectOrCreate?: Prisma.PayrollComponentCreateOrConnectWithoutPayrollRecordComponentInput
+  upsert?: Prisma.PayrollComponentUpsertWithoutPayrollRecordComponentInput
+  connect?: Prisma.PayrollComponentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PayrollComponentUpdateToOneWithWhereWithoutPayrollRecordComponentInput, Prisma.PayrollComponentUpdateWithoutPayrollRecordComponentInput>, Prisma.PayrollComponentUncheckedUpdateWithoutPayrollRecordComponentInput>
 }
 
-export type EnumComponentTypeFieldUpdateOperationsInput = {
-  set?: $Enums.ComponentType
-}
-
-export type PayrollComponentCreateWithoutRecordInput = {
-  id?: string
+export type PayrollComponentCreateWithoutPayrollRecordComponentInput = {
   name: string
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  type: $Enums.ComponentType
+  type: string
+  description?: string | null
+  sheetName?: string | null
+  isActive?: boolean | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
-export type PayrollComponentUncheckedCreateWithoutRecordInput = {
-  id?: string
+export type PayrollComponentUncheckedCreateWithoutPayrollRecordComponentInput = {
+  id?: number
   name: string
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  type: $Enums.ComponentType
+  type: string
+  description?: string | null
+  sheetName?: string | null
+  isActive?: boolean | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
-export type PayrollComponentCreateOrConnectWithoutRecordInput = {
+export type PayrollComponentCreateOrConnectWithoutPayrollRecordComponentInput = {
   where: Prisma.PayrollComponentWhereUniqueInput
-  create: Prisma.XOR<Prisma.PayrollComponentCreateWithoutRecordInput, Prisma.PayrollComponentUncheckedCreateWithoutRecordInput>
+  create: Prisma.XOR<Prisma.PayrollComponentCreateWithoutPayrollRecordComponentInput, Prisma.PayrollComponentUncheckedCreateWithoutPayrollRecordComponentInput>
 }
 
-export type PayrollComponentCreateManyRecordInputEnvelope = {
-  data: Prisma.PayrollComponentCreateManyRecordInput | Prisma.PayrollComponentCreateManyRecordInput[]
-  skipDuplicates?: boolean
+export type PayrollComponentUpsertWithoutPayrollRecordComponentInput = {
+  update: Prisma.XOR<Prisma.PayrollComponentUpdateWithoutPayrollRecordComponentInput, Prisma.PayrollComponentUncheckedUpdateWithoutPayrollRecordComponentInput>
+  create: Prisma.XOR<Prisma.PayrollComponentCreateWithoutPayrollRecordComponentInput, Prisma.PayrollComponentUncheckedCreateWithoutPayrollRecordComponentInput>
+  where?: Prisma.PayrollComponentWhereInput
 }
 
-export type PayrollComponentUpsertWithWhereUniqueWithoutRecordInput = {
-  where: Prisma.PayrollComponentWhereUniqueInput
-  update: Prisma.XOR<Prisma.PayrollComponentUpdateWithoutRecordInput, Prisma.PayrollComponentUncheckedUpdateWithoutRecordInput>
-  create: Prisma.XOR<Prisma.PayrollComponentCreateWithoutRecordInput, Prisma.PayrollComponentUncheckedCreateWithoutRecordInput>
+export type PayrollComponentUpdateToOneWithWhereWithoutPayrollRecordComponentInput = {
+  where?: Prisma.PayrollComponentWhereInput
+  data: Prisma.XOR<Prisma.PayrollComponentUpdateWithoutPayrollRecordComponentInput, Prisma.PayrollComponentUncheckedUpdateWithoutPayrollRecordComponentInput>
 }
 
-export type PayrollComponentUpdateWithWhereUniqueWithoutRecordInput = {
-  where: Prisma.PayrollComponentWhereUniqueInput
-  data: Prisma.XOR<Prisma.PayrollComponentUpdateWithoutRecordInput, Prisma.PayrollComponentUncheckedUpdateWithoutRecordInput>
-}
-
-export type PayrollComponentUpdateManyWithWhereWithoutRecordInput = {
-  where: Prisma.PayrollComponentScalarWhereInput
-  data: Prisma.XOR<Prisma.PayrollComponentUpdateManyMutationInput, Prisma.PayrollComponentUncheckedUpdateManyWithoutRecordInput>
-}
-
-export type PayrollComponentScalarWhereInput = {
-  AND?: Prisma.PayrollComponentScalarWhereInput | Prisma.PayrollComponentScalarWhereInput[]
-  OR?: Prisma.PayrollComponentScalarWhereInput[]
-  NOT?: Prisma.PayrollComponentScalarWhereInput | Prisma.PayrollComponentScalarWhereInput[]
-  id?: Prisma.StringFilter<"PayrollComponent"> | string
-  recordId?: Prisma.StringFilter<"PayrollComponent"> | string
-  name?: Prisma.StringFilter<"PayrollComponent"> | string
-  amount?: Prisma.DecimalFilter<"PayrollComponent"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFilter<"PayrollComponent"> | $Enums.ComponentType
-  createdAt?: Prisma.DateTimeFilter<"PayrollComponent"> | Date | string
-}
-
-export type PayrollComponentCreateManyRecordInput = {
-  id?: string
-  name: string
-  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
-  type: $Enums.ComponentType
-  createdAt?: Date | string
-}
-
-export type PayrollComponentUpdateWithoutRecordInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+export type PayrollComponentUpdateWithoutPayrollRecordComponentInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sheetName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PayrollComponentUncheckedUpdateWithoutRecordInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+export type PayrollComponentUncheckedUpdateWithoutPayrollRecordComponentInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sheetName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type PayrollComponentUncheckedUpdateManyWithoutRecordInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  type?: Prisma.EnumComponentTypeFieldUpdateOperationsInput | $Enums.ComponentType
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+
+/**
+ * Count Type PayrollComponentCountOutputType
+ */
+
+export type PayrollComponentCountOutputType = {
+  PayrollRecordComponent: number
 }
 
+export type PayrollComponentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  PayrollRecordComponent?: boolean | PayrollComponentCountOutputTypeCountPayrollRecordComponentArgs
+}
+
+/**
+ * PayrollComponentCountOutputType without action
+ */
+export type PayrollComponentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayrollComponentCountOutputType
+   */
+  select?: Prisma.PayrollComponentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PayrollComponentCountOutputType without action
+ */
+export type PayrollComponentCountOutputTypeCountPayrollRecordComponentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayrollRecordComponentWhereInput
+}
 
 
 export type PayrollComponentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  recordId?: boolean
   name?: boolean
-  amount?: boolean
   type?: boolean
+  description?: boolean
+  sheetName?: boolean
+  isActive?: boolean
   createdAt?: boolean
-  record?: boolean | Prisma.PayrollRecordDefaultArgs<ExtArgs>
+  updatedAt?: boolean
+  PayrollRecordComponent?: boolean | Prisma.PayrollComponent$PayrollRecordComponentArgs<ExtArgs>
+  _count?: boolean | Prisma.PayrollComponentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payrollComponent"]>
 
 export type PayrollComponentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  recordId?: boolean
   name?: boolean
-  amount?: boolean
   type?: boolean
+  description?: boolean
+  sheetName?: boolean
+  isActive?: boolean
   createdAt?: boolean
-  record?: boolean | Prisma.PayrollRecordDefaultArgs<ExtArgs>
+  updatedAt?: boolean
 }, ExtArgs["result"]["payrollComponent"]>
 
 export type PayrollComponentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  recordId?: boolean
   name?: boolean
-  amount?: boolean
   type?: boolean
+  description?: boolean
+  sheetName?: boolean
+  isActive?: boolean
   createdAt?: boolean
-  record?: boolean | Prisma.PayrollRecordDefaultArgs<ExtArgs>
+  updatedAt?: boolean
 }, ExtArgs["result"]["payrollComponent"]>
 
 export type PayrollComponentSelectScalar = {
   id?: boolean
-  recordId?: boolean
   name?: boolean
-  amount?: boolean
   type?: boolean
+  description?: boolean
+  sheetName?: boolean
+  isActive?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type PayrollComponentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "recordId" | "name" | "amount" | "type" | "createdAt", ExtArgs["result"]["payrollComponent"]>
+export type PayrollComponentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "description" | "sheetName" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollComponent"]>
 export type PayrollComponentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  record?: boolean | Prisma.PayrollRecordDefaultArgs<ExtArgs>
+  PayrollRecordComponent?: boolean | Prisma.PayrollComponent$PayrollRecordComponentArgs<ExtArgs>
+  _count?: boolean | Prisma.PayrollComponentCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type PayrollComponentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  record?: boolean | Prisma.PayrollRecordDefaultArgs<ExtArgs>
-}
-export type PayrollComponentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  record?: boolean | Prisma.PayrollRecordDefaultArgs<ExtArgs>
-}
+export type PayrollComponentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type PayrollComponentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $PayrollComponentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PayrollComponent"
   objects: {
-    record: Prisma.$PayrollRecordPayload<ExtArgs>
+    PayrollRecordComponent: Prisma.$PayrollRecordComponentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
-    recordId: string
+    id: number
     name: string
-    amount: runtime.Decimal
-    type: $Enums.ComponentType
+    type: string
+    description: string | null
+    sheetName: string | null
+    isActive: boolean | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["payrollComponent"]>
   composites: {}
 }
@@ -973,7 +993,7 @@ readonly fields: PayrollComponentFieldRefs;
  */
 export interface Prisma__PayrollComponentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  record<T extends Prisma.PayrollRecordDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayrollRecordDefaultArgs<ExtArgs>>): Prisma.Prisma__PayrollRecordClient<runtime.Types.Result.GetResult<Prisma.$PayrollRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  PayrollRecordComponent<T extends Prisma.PayrollComponent$PayrollRecordComponentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayrollComponent$PayrollRecordComponentArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayrollRecordComponentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1003,12 +1023,14 @@ export interface Prisma__PayrollComponentClient<T, Null = never, ExtArgs extends
  * Fields of the PayrollComponent model
  */
 export interface PayrollComponentFieldRefs {
-  readonly id: Prisma.FieldRef<"PayrollComponent", 'String'>
-  readonly recordId: Prisma.FieldRef<"PayrollComponent", 'String'>
+  readonly id: Prisma.FieldRef<"PayrollComponent", 'Int'>
   readonly name: Prisma.FieldRef<"PayrollComponent", 'String'>
-  readonly amount: Prisma.FieldRef<"PayrollComponent", 'Decimal'>
-  readonly type: Prisma.FieldRef<"PayrollComponent", 'ComponentType'>
+  readonly type: Prisma.FieldRef<"PayrollComponent", 'String'>
+  readonly description: Prisma.FieldRef<"PayrollComponent", 'String'>
+  readonly sheetName: Prisma.FieldRef<"PayrollComponent", 'String'>
+  readonly isActive: Prisma.FieldRef<"PayrollComponent", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"PayrollComponent", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"PayrollComponent", 'DateTime'>
 }
     
 
@@ -1263,10 +1285,6 @@ export type PayrollComponentCreateManyAndReturnArgs<ExtArgs extends runtime.Type
    */
   data: Prisma.PayrollComponentCreateManyInput | Prisma.PayrollComponentCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PayrollComponentIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1337,10 +1355,6 @@ export type PayrollComponentUpdateManyAndReturnArgs<ExtArgs extends runtime.Type
    * Limit how many PayrollComponents to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PayrollComponentIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1407,6 +1421,30 @@ export type PayrollComponentDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many PayrollComponents to delete.
    */
   limit?: number
+}
+
+/**
+ * PayrollComponent.PayrollRecordComponent
+ */
+export type PayrollComponent$PayrollRecordComponentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayrollRecordComponent
+   */
+  select?: Prisma.PayrollRecordComponentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayrollRecordComponent
+   */
+  omit?: Prisma.PayrollRecordComponentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayrollRecordComponentInclude<ExtArgs> | null
+  where?: Prisma.PayrollRecordComponentWhereInput
+  orderBy?: Prisma.PayrollRecordComponentOrderByWithRelationInput | Prisma.PayrollRecordComponentOrderByWithRelationInput[]
+  cursor?: Prisma.PayrollRecordComponentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayrollRecordComponentScalarFieldEnum | Prisma.PayrollRecordComponentScalarFieldEnum[]
 }
 
 /**

@@ -125,3 +125,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+.app-sidebar a {
+  color: var(--sidebar-foreground);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  display: inline-block;
+}
+
+.app-sidebar a:hover,
+.app-sidebar a.active {
+  color: var(--sidebar-primary-foreground);
+  background-color: var(--sidebar-primary);
+}
+
+.app-header {
+  background-color: var(--card);
+}
+
+.app-footer {
+  background-color: var(--card);
+}
+

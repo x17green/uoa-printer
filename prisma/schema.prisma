@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client"
   output          = "../lib/prisma"
@@ -11,115 +8,104 @@ datasource db {
   provider = "postgresql"
 }
 
-// Enums for staff classification and component types
-enum StaffType {
-  ACADEMIC
-  NON_ACADEMIC
-}
-
-enum ComponentType {
-  INCOME
-  DEDUCTION
-}
-
-// Employee/Staff model - contains master employee data
 model Employee {
-  id            String    @id @default(cuid())
-  staffNumber   String    @unique
-  fullName      String
-  department    String
-  staffType     StaffType
-  bankName      String?
-  accountNumber String?
-  email         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  // ✅ One-to-many: Employee 1 ---> * PayrollRecord
+  id             Int             @id @default(autoincrement())
+  staffNumber    String          @unique @db.VarChar(50)
+  firstName      String          @db.VarChar(255)
+  lastName       String          @db.VarChar(255)
+  email          String?         @unique @db.VarChar(255)
+  department     String?         @db.VarChar(255)
+  position       String?         @db.VarChar(255)
+  salary         Decimal?        @db.Decimal(15, 2)
+  createdAt      DateTime        @default(now()) @db.Timestamp(6)
+  updatedAt      DateTime        @default(now()) @updatedAt @db.Timestamp(6)
   payrollRecords PayrollRecord[]
 
-  @@index([staffNumber])
-  @@index([staffType])
+  @@index([staffNumber], map: "idx_employee_staffnumber")
 }
 
-// PayrollRun model - represents a monthly payroll batch
 model PayrollRun {
-  id          String    @id @default(cuid())
-  month       Int
-  year        Int
-  uploadedAt  DateTime  @default(now())
-  uploadedBy  String
-  processedAt DateTime?
-  status      String    @default("PENDING")
-  notes       String?
-
-  // ✅ One-to-many: PayrollRun 1 ---> * PayrollRecord
-  // NO onDelete here - it goes on the child side only
-  records PayrollRecord[]
+  id               Int               @id @default(autoincrement())
+  month            Int
+  year             Int
+  status           String            @default("PENDING") @db.VarChar(50)
+  totalRecords     Int?              @default(0)
+  processedRecords Int?              @default(0)
+  errorRecords     Int?              @default(0)
+  fileUrl          String?           @db.VarChar(255)
+  notes            String?
+  createdAt        DateTime          @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime          @default(now()) @db.Timestamp(6)
+  records          PayrollRecord[]
+  ValidationError  ValidationError[]
 
   @@unique([month, year])
-  @@index([year])
-  @@index([status])
+  @@index([month, year], map: "idx_payrollrun_month_year")
 }
 
-// ✅ PayrollRecord model - ALL onDelete actions here
 model PayrollRecord {
-  id           String @id @default(cuid())
-  payrollRunId String // Foreign key to PayrollRun
-  employeeId   String // Foreign key to Employee
+  id                     Int                      @id @default(autoincrement())
+  payrollRunId           Int
+  employeeId             Int
+  basicSalary            Decimal?                 @db.Decimal(15, 2)
+  grossEarnings          Decimal?                 @default(0) @db.Decimal(15, 2)
+  totalDeductions        Decimal?                 @default(0) @db.Decimal(15, 2)
+  netPay                 Decimal?                 @default(0) @db.Decimal(15, 2)
+  taxableIncome          Decimal?                 @db.Decimal(15, 2)
+  incomeTax              Decimal?                 @default(0) @db.Decimal(15, 2)
+  pensionContribution    Decimal?                 @default(0) @db.Decimal(15, 2)
+  status                 String?                  @default("PENDING") @db.VarChar(50)
+  notes                  String?
+  createdAt              DateTime                 @default(now()) @db.Timestamp(6)
+  updatedAt              DateTime                 @default(now()) @updatedAt @db.Timestamp(6)
+  employee               Employee                 @relation(fields: [employeeId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  payrollRun             PayrollRun               @relation(fields: [payrollRunId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  PayrollRecordComponent PayrollRecordComponent[]
+  ValidationError        ValidationError[]
 
-  // ✅ Many-to-one: PayrollRecord * ---> 1 PayrollRun
-  payrollRun PayrollRun @relation(fields: [payrollRunId], references: [id], onDelete: Cascade)
-
-  // ✅ Many-to-one: PayrollRecord * ---> 1 Employee  
-  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-
-  // Financial fields
-  basicSalary     Decimal @db.Decimal(15, 2)
-  grossPay        Decimal @db.Decimal(15, 2)
-  totalDeductions Decimal @db.Decimal(15, 2)
-  netPay          Decimal @db.Decimal(15, 2)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // ✅ One-to-many: PayrollRecord 1 ---> * PayrollComponent
-  components PayrollComponent[]
-
-  @@unique([payrollRunId, employeeId])
-  @@index([payrollRunId])
-  @@index([employeeId])
+  @@index([employeeId], map: "idx_payrollrecord_employee")
+  @@index([payrollRunId], map: "idx_payrollrecord_run")
 }
 
-// ✅ PayrollComponent model
 model PayrollComponent {
-  id       String @id @default(cuid())
-  recordId String // Foreign key to PayrollRecord
-
-  // ✅ Many-to-one: PayrollComponent * ---> 1 PayrollRecord
-  record PayrollRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
-
-  name   String
-  amount Decimal       @db.Decimal(15, 2)
-  type   ComponentType
-
-  createdAt DateTime @default(now())
-
-  @@index([recordId])
-  @@index([type])
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @db.VarChar(255)
+  type                   String                   @db.VarChar(50)
+  description            String?
+  sheetName              String?                  @db.VarChar(255)
+  isActive               Boolean?                 @default(true)
+  createdAt              DateTime                 @default(now()) @db.Timestamp(6)
+  updatedAt              DateTime                 @default(now()) @db.Timestamp(6)
+  PayrollRecordComponent PayrollRecordComponent[]
 }
 
-// ValidationError model (unchanged)
 model ValidationError {
-  id           String   @id @default(cuid())
-  payrollRunId String
-  errorType    String
-  staffNumber  String?
-  staffName    String?
-  message      String
-  severity     String   @default("ERROR")
-  createdAt    DateTime @default(now())
+  id              Int            @id @default(autoincrement())
+  payrollRunId    Int
+  payrollRecordId Int?
+  staffNumber     String?        @db.VarChar(50)
+  type            String         @db.VarChar(50)
+  message         String
+  severity        String?        @default("WARNING") @db.VarChar(50)
+  isResolved      Boolean?       @default(false)
+  createdAt       DateTime       @default(now()) @db.Timestamp(6)
+  updatedAt       DateTime       @default(now()) @db.Timestamp(6)
+  PayrollRecord   PayrollRecord? @relation(fields: [payrollRecordId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  PayrollRun      PayrollRun     @relation(fields: [payrollRunId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@index([payrollRunId])
-  @@index([errorType])
+  @@index([payrollRecordId], map: "idx_validationerror_record")
+  @@index([payrollRunId], map: "idx_validationerror_run")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model PayrollRecordComponent {
+  id               Int              @id @default(autoincrement())
+  payrollRecordId  Int
+  componentId      Int
+  amount           Decimal          @db.Decimal(15, 2)
+  createdAt        DateTime         @default(now()) @db.Timestamp(6)
+  PayrollComponent PayrollComponent @relation(fields: [componentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  PayrollRecord    PayrollRecord    @relation(fields: [payrollRecordId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([payrollRecordId, componentId])
 }

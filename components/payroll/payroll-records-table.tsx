@@ -31,9 +31,9 @@ export function PayrollRecordsTable({ records }: PayrollRecordsTableProps) {
 
   const formatCurrency = (value: string | number) => {
     const num = typeof value === 'string' ? parseFloat(value) : value;
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-NG', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'NGN',
       minimumFractionDigits: 2,
     }).format(num);
   };

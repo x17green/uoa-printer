@@ -55,7 +55,8 @@ export const ModelName = {
   PayrollRun: 'PayrollRun',
   PayrollRecord: 'PayrollRecord',
   PayrollComponent: 'PayrollComponent',
-  ValidationError: 'ValidationError'
+  ValidationError: 'ValidationError',
+  PayrollRecordComponent: 'PayrollRecordComponent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -77,12 +78,12 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const EmployeeScalarFieldEnum = {
   id: 'id',
   staffNumber: 'staffNumber',
-  fullName: 'fullName',
-  department: 'department',
-  staffType: 'staffType',
-  bankName: 'bankName',
-  accountNumber: 'accountNumber',
+  firstName: 'firstName',
+  lastName: 'lastName',
   email: 'email',
+  department: 'department',
+  position: 'position',
+  salary: 'salary',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -94,11 +95,14 @@ export const PayrollRunScalarFieldEnum = {
   id: 'id',
   month: 'month',
   year: 'year',
-  uploadedAt: 'uploadedAt',
-  uploadedBy: 'uploadedBy',
-  processedAt: 'processedAt',
   status: 'status',
-  notes: 'notes'
+  totalRecords: 'totalRecords',
+  processedRecords: 'processedRecords',
+  errorRecords: 'errorRecords',
+  fileUrl: 'fileUrl',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PayrollRunScalarFieldEnum = (typeof PayrollRunScalarFieldEnum)[keyof typeof PayrollRunScalarFieldEnum]
@@ -109,9 +113,14 @@ export const PayrollRecordScalarFieldEnum = {
   payrollRunId: 'payrollRunId',
   employeeId: 'employeeId',
   basicSalary: 'basicSalary',
-  grossPay: 'grossPay',
+  grossEarnings: 'grossEarnings',
   totalDeductions: 'totalDeductions',
   netPay: 'netPay',
+  taxableIncome: 'taxableIncome',
+  incomeTax: 'incomeTax',
+  pensionContribution: 'pensionContribution',
+  status: 'status',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -121,11 +130,13 @@ export type PayrollRecordScalarFieldEnum = (typeof PayrollRecordScalarFieldEnum)
 
 export const PayrollComponentScalarFieldEnum = {
   id: 'id',
-  recordId: 'recordId',
   name: 'name',
-  amount: 'amount',
   type: 'type',
-  createdAt: 'createdAt'
+  description: 'description',
+  sheetName: 'sheetName',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PayrollComponentScalarFieldEnum = (typeof PayrollComponentScalarFieldEnum)[keyof typeof PayrollComponentScalarFieldEnum]
@@ -134,15 +145,28 @@ export type PayrollComponentScalarFieldEnum = (typeof PayrollComponentScalarFiel
 export const ValidationErrorScalarFieldEnum = {
   id: 'id',
   payrollRunId: 'payrollRunId',
-  errorType: 'errorType',
+  payrollRecordId: 'payrollRecordId',
   staffNumber: 'staffNumber',
-  staffName: 'staffName',
+  type: 'type',
   message: 'message',
   severity: 'severity',
-  createdAt: 'createdAt'
+  isResolved: 'isResolved',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ValidationErrorScalarFieldEnum = (typeof ValidationErrorScalarFieldEnum)[keyof typeof ValidationErrorScalarFieldEnum]
+
+
+export const PayrollRecordComponentScalarFieldEnum = {
+  id: 'id',
+  payrollRecordId: 'payrollRecordId',
+  componentId: 'componentId',
+  amount: 'amount',
+  createdAt: 'createdAt'
+} as const
+
+export type PayrollRecordComponentScalarFieldEnum = (typeof PayrollRecordComponentScalarFieldEnum)[keyof typeof PayrollRecordComponentScalarFieldEnum]
 
 
 export const SortOrder = {

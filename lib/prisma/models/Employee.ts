@@ -20,32 +20,44 @@ export type EmployeeModel = runtime.Types.Result.DefaultSelection<Prisma.$Employ
 
 export type AggregateEmployee = {
   _count: EmployeeCountAggregateOutputType | null
+  _avg: EmployeeAvgAggregateOutputType | null
+  _sum: EmployeeSumAggregateOutputType | null
   _min: EmployeeMinAggregateOutputType | null
   _max: EmployeeMaxAggregateOutputType | null
 }
 
+export type EmployeeAvgAggregateOutputType = {
+  id: number | null
+  salary: runtime.Decimal | null
+}
+
+export type EmployeeSumAggregateOutputType = {
+  id: number | null
+  salary: runtime.Decimal | null
+}
+
 export type EmployeeMinAggregateOutputType = {
-  id: string | null
+  id: number | null
   staffNumber: string | null
-  fullName: string | null
-  department: string | null
-  staffType: $Enums.StaffType | null
-  bankName: string | null
-  accountNumber: string | null
+  firstName: string | null
+  lastName: string | null
   email: string | null
+  department: string | null
+  position: string | null
+  salary: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
 
 export type EmployeeMaxAggregateOutputType = {
-  id: string | null
+  id: number | null
   staffNumber: string | null
-  fullName: string | null
-  department: string | null
-  staffType: $Enums.StaffType | null
-  bankName: string | null
-  accountNumber: string | null
+  firstName: string | null
+  lastName: string | null
   email: string | null
+  department: string | null
+  position: string | null
+  salary: runtime.Decimal | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,27 +65,37 @@ export type EmployeeMaxAggregateOutputType = {
 export type EmployeeCountAggregateOutputType = {
   id: number
   staffNumber: number
-  fullName: number
-  department: number
-  staffType: number
-  bankName: number
-  accountNumber: number
+  firstName: number
+  lastName: number
   email: number
+  department: number
+  position: number
+  salary: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
 
+export type EmployeeAvgAggregateInputType = {
+  id?: true
+  salary?: true
+}
+
+export type EmployeeSumAggregateInputType = {
+  id?: true
+  salary?: true
+}
+
 export type EmployeeMinAggregateInputType = {
   id?: true
   staffNumber?: true
-  fullName?: true
-  department?: true
-  staffType?: true
-  bankName?: true
-  accountNumber?: true
+  firstName?: true
+  lastName?: true
   email?: true
+  department?: true
+  position?: true
+  salary?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -81,12 +103,12 @@ export type EmployeeMinAggregateInputType = {
 export type EmployeeMaxAggregateInputType = {
   id?: true
   staffNumber?: true
-  fullName?: true
-  department?: true
-  staffType?: true
-  bankName?: true
-  accountNumber?: true
+  firstName?: true
+  lastName?: true
   email?: true
+  department?: true
+  position?: true
+  salary?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,12 +116,12 @@ export type EmployeeMaxAggregateInputType = {
 export type EmployeeCountAggregateInputType = {
   id?: true
   staffNumber?: true
-  fullName?: true
-  department?: true
-  staffType?: true
-  bankName?: true
-  accountNumber?: true
+  firstName?: true
+  lastName?: true
   email?: true
+  department?: true
+  position?: true
+  salary?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -143,6 +165,18 @@ export type EmployeeAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: EmployeeAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: EmployeeSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: EmployeeMinAggregateInputType
@@ -173,22 +207,26 @@ export type EmployeeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: EmployeeCountAggregateInputType | true
+  _avg?: EmployeeAvgAggregateInputType
+  _sum?: EmployeeSumAggregateInputType
   _min?: EmployeeMinAggregateInputType
   _max?: EmployeeMaxAggregateInputType
 }
 
 export type EmployeeGroupByOutputType = {
-  id: string
+  id: number
   staffNumber: string
-  fullName: string
-  department: string
-  staffType: $Enums.StaffType
-  bankName: string | null
-  accountNumber: string | null
+  firstName: string
+  lastName: string
   email: string | null
+  department: string | null
+  position: string | null
+  salary: runtime.Decimal | null
   createdAt: Date
   updatedAt: Date
   _count: EmployeeCountAggregateOutputType | null
+  _avg: EmployeeAvgAggregateOutputType | null
+  _sum: EmployeeSumAggregateOutputType | null
   _min: EmployeeMinAggregateOutputType | null
   _max: EmployeeMaxAggregateOutputType | null
 }
@@ -212,14 +250,14 @@ export type EmployeeWhereInput = {
   AND?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[]
   OR?: Prisma.EmployeeWhereInput[]
   NOT?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[]
-  id?: Prisma.StringFilter<"Employee"> | string
+  id?: Prisma.IntFilter<"Employee"> | number
   staffNumber?: Prisma.StringFilter<"Employee"> | string
-  fullName?: Prisma.StringFilter<"Employee"> | string
-  department?: Prisma.StringFilter<"Employee"> | string
-  staffType?: Prisma.EnumStaffTypeFilter<"Employee"> | $Enums.StaffType
-  bankName?: Prisma.StringNullableFilter<"Employee"> | string | null
-  accountNumber?: Prisma.StringNullableFilter<"Employee"> | string | null
+  firstName?: Prisma.StringFilter<"Employee"> | string
+  lastName?: Prisma.StringFilter<"Employee"> | string
   email?: Prisma.StringNullableFilter<"Employee"> | string | null
+  department?: Prisma.StringNullableFilter<"Employee"> | string | null
+  position?: Prisma.StringNullableFilter<"Employee"> | string | null
+  salary?: Prisma.DecimalNullableFilter<"Employee"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   payrollRecords?: Prisma.PayrollRecordListRelationFilter
@@ -228,157 +266,156 @@ export type EmployeeWhereInput = {
 export type EmployeeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   staffNumber?: Prisma.SortOrder
-  fullName?: Prisma.SortOrder
-  department?: Prisma.SortOrder
-  staffType?: Prisma.SortOrder
-  bankName?: Prisma.SortOrderInput | Prisma.SortOrder
-  accountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
+  department?: Prisma.SortOrderInput | Prisma.SortOrder
+  position?: Prisma.SortOrderInput | Prisma.SortOrder
+  salary?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   payrollRecords?: Prisma.PayrollRecordOrderByRelationAggregateInput
 }
 
 export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   staffNumber?: string
+  email?: string
   AND?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[]
   OR?: Prisma.EmployeeWhereInput[]
   NOT?: Prisma.EmployeeWhereInput | Prisma.EmployeeWhereInput[]
-  fullName?: Prisma.StringFilter<"Employee"> | string
-  department?: Prisma.StringFilter<"Employee"> | string
-  staffType?: Prisma.EnumStaffTypeFilter<"Employee"> | $Enums.StaffType
-  bankName?: Prisma.StringNullableFilter<"Employee"> | string | null
-  accountNumber?: Prisma.StringNullableFilter<"Employee"> | string | null
-  email?: Prisma.StringNullableFilter<"Employee"> | string | null
+  firstName?: Prisma.StringFilter<"Employee"> | string
+  lastName?: Prisma.StringFilter<"Employee"> | string
+  department?: Prisma.StringNullableFilter<"Employee"> | string | null
+  position?: Prisma.StringNullableFilter<"Employee"> | string | null
+  salary?: Prisma.DecimalNullableFilter<"Employee"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Employee"> | Date | string
   payrollRecords?: Prisma.PayrollRecordListRelationFilter
-}, "id" | "staffNumber">
+}, "id" | "staffNumber" | "email">
 
 export type EmployeeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   staffNumber?: Prisma.SortOrder
-  fullName?: Prisma.SortOrder
-  department?: Prisma.SortOrder
-  staffType?: Prisma.SortOrder
-  bankName?: Prisma.SortOrderInput | Prisma.SortOrder
-  accountNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
+  department?: Prisma.SortOrderInput | Prisma.SortOrder
+  position?: Prisma.SortOrderInput | Prisma.SortOrder
+  salary?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.EmployeeCountOrderByAggregateInput
+  _avg?: Prisma.EmployeeAvgOrderByAggregateInput
   _max?: Prisma.EmployeeMaxOrderByAggregateInput
   _min?: Prisma.EmployeeMinOrderByAggregateInput
+  _sum?: Prisma.EmployeeSumOrderByAggregateInput
 }
 
 export type EmployeeScalarWhereWithAggregatesInput = {
   AND?: Prisma.EmployeeScalarWhereWithAggregatesInput | Prisma.EmployeeScalarWhereWithAggregatesInput[]
   OR?: Prisma.EmployeeScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EmployeeScalarWhereWithAggregatesInput | Prisma.EmployeeScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Employee"> | string
+  id?: Prisma.IntWithAggregatesFilter<"Employee"> | number
   staffNumber?: Prisma.StringWithAggregatesFilter<"Employee"> | string
-  fullName?: Prisma.StringWithAggregatesFilter<"Employee"> | string
-  department?: Prisma.StringWithAggregatesFilter<"Employee"> | string
-  staffType?: Prisma.EnumStaffTypeWithAggregatesFilter<"Employee"> | $Enums.StaffType
-  bankName?: Prisma.StringNullableWithAggregatesFilter<"Employee"> | string | null
-  accountNumber?: Prisma.StringNullableWithAggregatesFilter<"Employee"> | string | null
+  firstName?: Prisma.StringWithAggregatesFilter<"Employee"> | string
+  lastName?: Prisma.StringWithAggregatesFilter<"Employee"> | string
   email?: Prisma.StringNullableWithAggregatesFilter<"Employee"> | string | null
+  department?: Prisma.StringNullableWithAggregatesFilter<"Employee"> | string | null
+  position?: Prisma.StringNullableWithAggregatesFilter<"Employee"> | string | null
+  salary?: Prisma.DecimalNullableWithAggregatesFilter<"Employee"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Employee"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Employee"> | Date | string
 }
 
 export type EmployeeCreateInput = {
-  id?: string
   staffNumber: string
-  fullName: string
-  department: string
-  staffType: $Enums.StaffType
-  bankName?: string | null
-  accountNumber?: string | null
+  firstName: string
+  lastName: string
   email?: string | null
+  department?: string | null
+  position?: string | null
+  salary?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payrollRecords?: Prisma.PayrollRecordCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUncheckedCreateInput = {
-  id?: string
+  id?: number
   staffNumber: string
-  fullName: string
-  department: string
-  staffType: $Enums.StaffType
-  bankName?: string | null
-  accountNumber?: string | null
+  firstName: string
+  lastName: string
   email?: string | null
+  department?: string | null
+  position?: string | null
+  salary?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   payrollRecords?: Prisma.PayrollRecordUncheckedCreateNestedManyWithoutEmployeeInput
 }
 
 export type EmployeeUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   staffNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  department?: Prisma.StringFieldUpdateOperationsInput | string
-  staffType?: Prisma.EnumStaffTypeFieldUpdateOperationsInput | $Enums.StaffType
-  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salary?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payrollRecords?: Prisma.PayrollRecordUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   staffNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  department?: Prisma.StringFieldUpdateOperationsInput | string
-  staffType?: Prisma.EnumStaffTypeFieldUpdateOperationsInput | $Enums.StaffType
-  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salary?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payrollRecords?: Prisma.PayrollRecordUncheckedUpdateManyWithoutEmployeeNestedInput
 }
 
 export type EmployeeCreateManyInput = {
-  id?: string
+  id?: number
   staffNumber: string
-  fullName: string
-  department: string
-  staffType: $Enums.StaffType
-  bankName?: string | null
-  accountNumber?: string | null
+  firstName: string
+  lastName: string
   email?: string | null
+  department?: string | null
+  position?: string | null
+  salary?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type EmployeeUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   staffNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  department?: Prisma.StringFieldUpdateOperationsInput | string
-  staffType?: Prisma.EnumStaffTypeFieldUpdateOperationsInput | $Enums.StaffType
-  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salary?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EmployeeUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   staffNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  department?: Prisma.StringFieldUpdateOperationsInput | string
-  staffType?: Prisma.EnumStaffTypeFieldUpdateOperationsInput | $Enums.StaffType
-  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salary?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -386,25 +423,30 @@ export type EmployeeUncheckedUpdateManyInput = {
 export type EmployeeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   staffNumber?: Prisma.SortOrder
-  fullName?: Prisma.SortOrder
-  department?: Prisma.SortOrder
-  staffType?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountNumber?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  department?: Prisma.SortOrder
+  position?: Prisma.SortOrder
+  salary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type EmployeeAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  salary?: Prisma.SortOrder
 }
 
 export type EmployeeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   staffNumber?: Prisma.SortOrder
-  fullName?: Prisma.SortOrder
-  department?: Prisma.SortOrder
-  staffType?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountNumber?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  department?: Prisma.SortOrder
+  position?: Prisma.SortOrder
+  salary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -412,14 +454,19 @@ export type EmployeeMaxOrderByAggregateInput = {
 export type EmployeeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   staffNumber?: Prisma.SortOrder
-  fullName?: Prisma.SortOrder
-  department?: Prisma.SortOrder
-  staffType?: Prisma.SortOrder
-  bankName?: Prisma.SortOrder
-  accountNumber?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  department?: Prisma.SortOrder
+  position?: Prisma.SortOrder
+  salary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type EmployeeSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  salary?: Prisma.SortOrder
 }
 
 export type EmployeeScalarRelationFilter = {
@@ -431,16 +478,28 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type EnumStaffTypeFieldUpdateOperationsInput = {
-  set?: $Enums.StaffType
-}
-
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type EmployeeCreateNestedOneWithoutPayrollRecordsInput = {
@@ -458,27 +517,26 @@ export type EmployeeUpdateOneRequiredWithoutPayrollRecordsNestedInput = {
 }
 
 export type EmployeeCreateWithoutPayrollRecordsInput = {
-  id?: string
   staffNumber: string
-  fullName: string
-  department: string
-  staffType: $Enums.StaffType
-  bankName?: string | null
-  accountNumber?: string | null
+  firstName: string
+  lastName: string
   email?: string | null
+  department?: string | null
+  position?: string | null
+  salary?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type EmployeeUncheckedCreateWithoutPayrollRecordsInput = {
-  id?: string
+  id?: number
   staffNumber: string
-  fullName: string
-  department: string
-  staffType: $Enums.StaffType
-  bankName?: string | null
-  accountNumber?: string | null
+  firstName: string
+  lastName: string
   email?: string | null
+  department?: string | null
+  position?: string | null
+  salary?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -500,27 +558,26 @@ export type EmployeeUpdateToOneWithWhereWithoutPayrollRecordsInput = {
 }
 
 export type EmployeeUpdateWithoutPayrollRecordsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
   staffNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  department?: Prisma.StringFieldUpdateOperationsInput | string
-  staffType?: Prisma.EnumStaffTypeFieldUpdateOperationsInput | $Enums.StaffType
-  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salary?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EmployeeUncheckedUpdateWithoutPayrollRecordsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   staffNumber?: Prisma.StringFieldUpdateOperationsInput | string
-  fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  department?: Prisma.StringFieldUpdateOperationsInput | string
-  staffType?: Prisma.EnumStaffTypeFieldUpdateOperationsInput | $Enums.StaffType
-  bankName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  accountNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  department?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  salary?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -559,12 +616,12 @@ export type EmployeeCountOutputTypeCountPayrollRecordsArgs<ExtArgs extends runti
 export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   staffNumber?: boolean
-  fullName?: boolean
-  department?: boolean
-  staffType?: boolean
-  bankName?: boolean
-  accountNumber?: boolean
+  firstName?: boolean
+  lastName?: boolean
   email?: boolean
+  department?: boolean
+  position?: boolean
+  salary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   payrollRecords?: boolean | Prisma.Employee$payrollRecordsArgs<ExtArgs>
@@ -574,12 +631,12 @@ export type EmployeeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type EmployeeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   staffNumber?: boolean
-  fullName?: boolean
-  department?: boolean
-  staffType?: boolean
-  bankName?: boolean
-  accountNumber?: boolean
+  firstName?: boolean
+  lastName?: boolean
   email?: boolean
+  department?: boolean
+  position?: boolean
+  salary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["employee"]>
@@ -587,12 +644,12 @@ export type EmployeeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type EmployeeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   staffNumber?: boolean
-  fullName?: boolean
-  department?: boolean
-  staffType?: boolean
-  bankName?: boolean
-  accountNumber?: boolean
+  firstName?: boolean
+  lastName?: boolean
   email?: boolean
+  department?: boolean
+  position?: boolean
+  salary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["employee"]>
@@ -600,17 +657,17 @@ export type EmployeeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type EmployeeSelectScalar = {
   id?: boolean
   staffNumber?: boolean
-  fullName?: boolean
-  department?: boolean
-  staffType?: boolean
-  bankName?: boolean
-  accountNumber?: boolean
+  firstName?: boolean
+  lastName?: boolean
   email?: boolean
+  department?: boolean
+  position?: boolean
+  salary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type EmployeeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "staffNumber" | "fullName" | "department" | "staffType" | "bankName" | "accountNumber" | "email" | "createdAt" | "updatedAt", ExtArgs["result"]["employee"]>
+export type EmployeeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "staffNumber" | "firstName" | "lastName" | "email" | "department" | "position" | "salary" | "createdAt" | "updatedAt", ExtArgs["result"]["employee"]>
 export type EmployeeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payrollRecords?: boolean | Prisma.Employee$payrollRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.EmployeeCountOutputTypeDefaultArgs<ExtArgs>
@@ -624,14 +681,14 @@ export type $EmployeePayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     payrollRecords: Prisma.$PayrollRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
+    id: number
     staffNumber: string
-    fullName: string
-    department: string
-    staffType: $Enums.StaffType
-    bankName: string | null
-    accountNumber: string | null
+    firstName: string
+    lastName: string
     email: string | null
+    department: string | null
+    position: string | null
+    salary: runtime.Decimal | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["employee"]>
@@ -1058,14 +1115,14 @@ export interface Prisma__EmployeeClient<T, Null = never, ExtArgs extends runtime
  * Fields of the Employee model
  */
 export interface EmployeeFieldRefs {
-  readonly id: Prisma.FieldRef<"Employee", 'String'>
+  readonly id: Prisma.FieldRef<"Employee", 'Int'>
   readonly staffNumber: Prisma.FieldRef<"Employee", 'String'>
-  readonly fullName: Prisma.FieldRef<"Employee", 'String'>
-  readonly department: Prisma.FieldRef<"Employee", 'String'>
-  readonly staffType: Prisma.FieldRef<"Employee", 'StaffType'>
-  readonly bankName: Prisma.FieldRef<"Employee", 'String'>
-  readonly accountNumber: Prisma.FieldRef<"Employee", 'String'>
+  readonly firstName: Prisma.FieldRef<"Employee", 'String'>
+  readonly lastName: Prisma.FieldRef<"Employee", 'String'>
   readonly email: Prisma.FieldRef<"Employee", 'String'>
+  readonly department: Prisma.FieldRef<"Employee", 'String'>
+  readonly position: Prisma.FieldRef<"Employee", 'String'>
+  readonly salary: Prisma.FieldRef<"Employee", 'Decimal'>
   readonly createdAt: Prisma.FieldRef<"Employee", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Employee", 'DateTime'>
 }

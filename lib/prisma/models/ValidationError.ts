@@ -20,76 +20,114 @@ export type ValidationErrorModel = runtime.Types.Result.DefaultSelection<Prisma.
 
 export type AggregateValidationError = {
   _count: ValidationErrorCountAggregateOutputType | null
+  _avg: ValidationErrorAvgAggregateOutputType | null
+  _sum: ValidationErrorSumAggregateOutputType | null
   _min: ValidationErrorMinAggregateOutputType | null
   _max: ValidationErrorMaxAggregateOutputType | null
 }
 
+export type ValidationErrorAvgAggregateOutputType = {
+  id: number | null
+  payrollRunId: number | null
+  payrollRecordId: number | null
+}
+
+export type ValidationErrorSumAggregateOutputType = {
+  id: number | null
+  payrollRunId: number | null
+  payrollRecordId: number | null
+}
+
 export type ValidationErrorMinAggregateOutputType = {
-  id: string | null
-  payrollRunId: string | null
-  errorType: string | null
+  id: number | null
+  payrollRunId: number | null
+  payrollRecordId: number | null
   staffNumber: string | null
-  staffName: string | null
+  type: string | null
   message: string | null
   severity: string | null
+  isResolved: boolean | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ValidationErrorMaxAggregateOutputType = {
-  id: string | null
-  payrollRunId: string | null
-  errorType: string | null
+  id: number | null
+  payrollRunId: number | null
+  payrollRecordId: number | null
   staffNumber: string | null
-  staffName: string | null
+  type: string | null
   message: string | null
   severity: string | null
+  isResolved: boolean | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ValidationErrorCountAggregateOutputType = {
   id: number
   payrollRunId: number
-  errorType: number
+  payrollRecordId: number
   staffNumber: number
-  staffName: number
+  type: number
   message: number
   severity: number
+  isResolved: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
+export type ValidationErrorAvgAggregateInputType = {
+  id?: true
+  payrollRunId?: true
+  payrollRecordId?: true
+}
+
+export type ValidationErrorSumAggregateInputType = {
+  id?: true
+  payrollRunId?: true
+  payrollRecordId?: true
+}
+
 export type ValidationErrorMinAggregateInputType = {
   id?: true
   payrollRunId?: true
-  errorType?: true
+  payrollRecordId?: true
   staffNumber?: true
-  staffName?: true
+  type?: true
   message?: true
   severity?: true
+  isResolved?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type ValidationErrorMaxAggregateInputType = {
   id?: true
   payrollRunId?: true
-  errorType?: true
+  payrollRecordId?: true
   staffNumber?: true
-  staffName?: true
+  type?: true
   message?: true
   severity?: true
+  isResolved?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type ValidationErrorCountAggregateInputType = {
   id?: true
   payrollRunId?: true
-  errorType?: true
+  payrollRecordId?: true
   staffNumber?: true
-  staffName?: true
+  type?: true
   message?: true
   severity?: true
+  isResolved?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -131,6 +169,18 @@ export type ValidationErrorAggregateArgs<ExtArgs extends runtime.Types.Extension
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ValidationErrorAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ValidationErrorSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ValidationErrorMinAggregateInputType
@@ -161,20 +211,26 @@ export type ValidationErrorGroupByArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   _count?: ValidationErrorCountAggregateInputType | true
+  _avg?: ValidationErrorAvgAggregateInputType
+  _sum?: ValidationErrorSumAggregateInputType
   _min?: ValidationErrorMinAggregateInputType
   _max?: ValidationErrorMaxAggregateInputType
 }
 
 export type ValidationErrorGroupByOutputType = {
-  id: string
-  payrollRunId: string
-  errorType: string
+  id: number
+  payrollRunId: number
+  payrollRecordId: number | null
   staffNumber: string | null
-  staffName: string | null
+  type: string
   message: string
-  severity: string
+  severity: string | null
+  isResolved: boolean | null
   createdAt: Date
+  updatedAt: Date
   _count: ValidationErrorCountAggregateOutputType | null
+  _avg: ValidationErrorAvgAggregateOutputType | null
+  _sum: ValidationErrorSumAggregateOutputType | null
   _min: ValidationErrorMinAggregateOutputType | null
   _max: ValidationErrorMaxAggregateOutputType | null
 }
@@ -198,177 +254,524 @@ export type ValidationErrorWhereInput = {
   AND?: Prisma.ValidationErrorWhereInput | Prisma.ValidationErrorWhereInput[]
   OR?: Prisma.ValidationErrorWhereInput[]
   NOT?: Prisma.ValidationErrorWhereInput | Prisma.ValidationErrorWhereInput[]
-  id?: Prisma.StringFilter<"ValidationError"> | string
-  payrollRunId?: Prisma.StringFilter<"ValidationError"> | string
-  errorType?: Prisma.StringFilter<"ValidationError"> | string
+  id?: Prisma.IntFilter<"ValidationError"> | number
+  payrollRunId?: Prisma.IntFilter<"ValidationError"> | number
+  payrollRecordId?: Prisma.IntNullableFilter<"ValidationError"> | number | null
   staffNumber?: Prisma.StringNullableFilter<"ValidationError"> | string | null
-  staffName?: Prisma.StringNullableFilter<"ValidationError"> | string | null
+  type?: Prisma.StringFilter<"ValidationError"> | string
   message?: Prisma.StringFilter<"ValidationError"> | string
-  severity?: Prisma.StringFilter<"ValidationError"> | string
+  severity?: Prisma.StringNullableFilter<"ValidationError"> | string | null
+  isResolved?: Prisma.BoolNullableFilter<"ValidationError"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"ValidationError"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ValidationError"> | Date | string
+  PayrollRecord?: Prisma.XOR<Prisma.PayrollRecordNullableScalarRelationFilter, Prisma.PayrollRecordWhereInput> | null
+  PayrollRun?: Prisma.XOR<Prisma.PayrollRunScalarRelationFilter, Prisma.PayrollRunWhereInput>
 }
 
 export type ValidationErrorOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   payrollRunId?: Prisma.SortOrder
-  errorType?: Prisma.SortOrder
+  payrollRecordId?: Prisma.SortOrderInput | Prisma.SortOrder
   staffNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  staffName?: Prisma.SortOrderInput | Prisma.SortOrder
+  type?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  severity?: Prisma.SortOrder
+  severity?: Prisma.SortOrderInput | Prisma.SortOrder
+  isResolved?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  PayrollRecord?: Prisma.PayrollRecordOrderByWithRelationInput
+  PayrollRun?: Prisma.PayrollRunOrderByWithRelationInput
 }
 
 export type ValidationErrorWhereUniqueInput = Prisma.AtLeast<{
-  id?: string
+  id?: number
   AND?: Prisma.ValidationErrorWhereInput | Prisma.ValidationErrorWhereInput[]
   OR?: Prisma.ValidationErrorWhereInput[]
   NOT?: Prisma.ValidationErrorWhereInput | Prisma.ValidationErrorWhereInput[]
-  payrollRunId?: Prisma.StringFilter<"ValidationError"> | string
-  errorType?: Prisma.StringFilter<"ValidationError"> | string
+  payrollRunId?: Prisma.IntFilter<"ValidationError"> | number
+  payrollRecordId?: Prisma.IntNullableFilter<"ValidationError"> | number | null
   staffNumber?: Prisma.StringNullableFilter<"ValidationError"> | string | null
-  staffName?: Prisma.StringNullableFilter<"ValidationError"> | string | null
+  type?: Prisma.StringFilter<"ValidationError"> | string
   message?: Prisma.StringFilter<"ValidationError"> | string
-  severity?: Prisma.StringFilter<"ValidationError"> | string
+  severity?: Prisma.StringNullableFilter<"ValidationError"> | string | null
+  isResolved?: Prisma.BoolNullableFilter<"ValidationError"> | boolean | null
   createdAt?: Prisma.DateTimeFilter<"ValidationError"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ValidationError"> | Date | string
+  PayrollRecord?: Prisma.XOR<Prisma.PayrollRecordNullableScalarRelationFilter, Prisma.PayrollRecordWhereInput> | null
+  PayrollRun?: Prisma.XOR<Prisma.PayrollRunScalarRelationFilter, Prisma.PayrollRunWhereInput>
 }, "id">
 
 export type ValidationErrorOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   payrollRunId?: Prisma.SortOrder
-  errorType?: Prisma.SortOrder
+  payrollRecordId?: Prisma.SortOrderInput | Prisma.SortOrder
   staffNumber?: Prisma.SortOrderInput | Prisma.SortOrder
-  staffName?: Prisma.SortOrderInput | Prisma.SortOrder
+  type?: Prisma.SortOrder
   message?: Prisma.SortOrder
-  severity?: Prisma.SortOrder
+  severity?: Prisma.SortOrderInput | Prisma.SortOrder
+  isResolved?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.ValidationErrorCountOrderByAggregateInput
+  _avg?: Prisma.ValidationErrorAvgOrderByAggregateInput
   _max?: Prisma.ValidationErrorMaxOrderByAggregateInput
   _min?: Prisma.ValidationErrorMinOrderByAggregateInput
+  _sum?: Prisma.ValidationErrorSumOrderByAggregateInput
 }
 
 export type ValidationErrorScalarWhereWithAggregatesInput = {
   AND?: Prisma.ValidationErrorScalarWhereWithAggregatesInput | Prisma.ValidationErrorScalarWhereWithAggregatesInput[]
   OR?: Prisma.ValidationErrorScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ValidationErrorScalarWhereWithAggregatesInput | Prisma.ValidationErrorScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"ValidationError"> | string
-  payrollRunId?: Prisma.StringWithAggregatesFilter<"ValidationError"> | string
-  errorType?: Prisma.StringWithAggregatesFilter<"ValidationError"> | string
+  id?: Prisma.IntWithAggregatesFilter<"ValidationError"> | number
+  payrollRunId?: Prisma.IntWithAggregatesFilter<"ValidationError"> | number
+  payrollRecordId?: Prisma.IntNullableWithAggregatesFilter<"ValidationError"> | number | null
   staffNumber?: Prisma.StringNullableWithAggregatesFilter<"ValidationError"> | string | null
-  staffName?: Prisma.StringNullableWithAggregatesFilter<"ValidationError"> | string | null
+  type?: Prisma.StringWithAggregatesFilter<"ValidationError"> | string
   message?: Prisma.StringWithAggregatesFilter<"ValidationError"> | string
-  severity?: Prisma.StringWithAggregatesFilter<"ValidationError"> | string
+  severity?: Prisma.StringNullableWithAggregatesFilter<"ValidationError"> | string | null
+  isResolved?: Prisma.BoolNullableWithAggregatesFilter<"ValidationError"> | boolean | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ValidationError"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ValidationError"> | Date | string
 }
 
 export type ValidationErrorCreateInput = {
-  id?: string
-  payrollRunId: string
-  errorType: string
   staffNumber?: string | null
-  staffName?: string | null
+  type: string
   message: string
-  severity?: string
+  severity?: string | null
+  isResolved?: boolean | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  PayrollRecord?: Prisma.PayrollRecordCreateNestedOneWithoutValidationErrorInput
+  PayrollRun: Prisma.PayrollRunCreateNestedOneWithoutValidationErrorInput
 }
 
 export type ValidationErrorUncheckedCreateInput = {
-  id?: string
-  payrollRunId: string
-  errorType: string
+  id?: number
+  payrollRunId: number
+  payrollRecordId?: number | null
   staffNumber?: string | null
-  staffName?: string | null
+  type: string
   message: string
-  severity?: string
+  severity?: string | null
+  isResolved?: boolean | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ValidationErrorUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  payrollRunId?: Prisma.StringFieldUpdateOperationsInput | string
-  errorType?: Prisma.StringFieldUpdateOperationsInput | string
   staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  staffName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
-  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  PayrollRecord?: Prisma.PayrollRecordUpdateOneWithoutValidationErrorNestedInput
+  PayrollRun?: Prisma.PayrollRunUpdateOneRequiredWithoutValidationErrorNestedInput
 }
 
 export type ValidationErrorUncheckedUpdateInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  payrollRunId?: Prisma.StringFieldUpdateOperationsInput | string
-  errorType?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  payrollRunId?: Prisma.IntFieldUpdateOperationsInput | number
+  payrollRecordId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  staffName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
-  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ValidationErrorCreateManyInput = {
-  id?: string
-  payrollRunId: string
-  errorType: string
+  id?: number
+  payrollRunId: number
+  payrollRecordId?: number | null
   staffNumber?: string | null
-  staffName?: string | null
+  type: string
   message: string
-  severity?: string
+  severity?: string | null
+  isResolved?: boolean | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ValidationErrorUpdateManyMutationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  payrollRunId?: Prisma.StringFieldUpdateOperationsInput | string
-  errorType?: Prisma.StringFieldUpdateOperationsInput | string
   staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  staffName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
-  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ValidationErrorUncheckedUpdateManyInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  payrollRunId?: Prisma.StringFieldUpdateOperationsInput | string
-  errorType?: Prisma.StringFieldUpdateOperationsInput | string
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  payrollRunId?: Prisma.IntFieldUpdateOperationsInput | number
+  payrollRecordId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  staffName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
-  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ValidationErrorListRelationFilter = {
+  every?: Prisma.ValidationErrorWhereInput
+  some?: Prisma.ValidationErrorWhereInput
+  none?: Prisma.ValidationErrorWhereInput
+}
+
+export type ValidationErrorOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type ValidationErrorCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   payrollRunId?: Prisma.SortOrder
-  errorType?: Prisma.SortOrder
+  payrollRecordId?: Prisma.SortOrder
   staffNumber?: Prisma.SortOrder
-  staffName?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   message?: Prisma.SortOrder
   severity?: Prisma.SortOrder
+  isResolved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type ValidationErrorAvgOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  payrollRunId?: Prisma.SortOrder
+  payrollRecordId?: Prisma.SortOrder
 }
 
 export type ValidationErrorMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   payrollRunId?: Prisma.SortOrder
-  errorType?: Prisma.SortOrder
+  payrollRecordId?: Prisma.SortOrder
   staffNumber?: Prisma.SortOrder
-  staffName?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   message?: Prisma.SortOrder
   severity?: Prisma.SortOrder
+  isResolved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ValidationErrorMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   payrollRunId?: Prisma.SortOrder
-  errorType?: Prisma.SortOrder
+  payrollRecordId?: Prisma.SortOrder
   staffNumber?: Prisma.SortOrder
-  staffName?: Prisma.SortOrder
+  type?: Prisma.SortOrder
   message?: Prisma.SortOrder
   severity?: Prisma.SortOrder
+  isResolved?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type ValidationErrorSumOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  payrollRunId?: Prisma.SortOrder
+  payrollRecordId?: Prisma.SortOrder
+}
+
+export type ValidationErrorCreateNestedManyWithoutPayrollRunInput = {
+  create?: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRunInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput> | Prisma.ValidationErrorCreateWithoutPayrollRunInput[] | Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput[]
+  connectOrCreate?: Prisma.ValidationErrorCreateOrConnectWithoutPayrollRunInput | Prisma.ValidationErrorCreateOrConnectWithoutPayrollRunInput[]
+  createMany?: Prisma.ValidationErrorCreateManyPayrollRunInputEnvelope
+  connect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+}
+
+export type ValidationErrorUncheckedCreateNestedManyWithoutPayrollRunInput = {
+  create?: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRunInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput> | Prisma.ValidationErrorCreateWithoutPayrollRunInput[] | Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput[]
+  connectOrCreate?: Prisma.ValidationErrorCreateOrConnectWithoutPayrollRunInput | Prisma.ValidationErrorCreateOrConnectWithoutPayrollRunInput[]
+  createMany?: Prisma.ValidationErrorCreateManyPayrollRunInputEnvelope
+  connect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+}
+
+export type ValidationErrorUpdateManyWithoutPayrollRunNestedInput = {
+  create?: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRunInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput> | Prisma.ValidationErrorCreateWithoutPayrollRunInput[] | Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput[]
+  connectOrCreate?: Prisma.ValidationErrorCreateOrConnectWithoutPayrollRunInput | Prisma.ValidationErrorCreateOrConnectWithoutPayrollRunInput[]
+  upsert?: Prisma.ValidationErrorUpsertWithWhereUniqueWithoutPayrollRunInput | Prisma.ValidationErrorUpsertWithWhereUniqueWithoutPayrollRunInput[]
+  createMany?: Prisma.ValidationErrorCreateManyPayrollRunInputEnvelope
+  set?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  disconnect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  delete?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  connect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  update?: Prisma.ValidationErrorUpdateWithWhereUniqueWithoutPayrollRunInput | Prisma.ValidationErrorUpdateWithWhereUniqueWithoutPayrollRunInput[]
+  updateMany?: Prisma.ValidationErrorUpdateManyWithWhereWithoutPayrollRunInput | Prisma.ValidationErrorUpdateManyWithWhereWithoutPayrollRunInput[]
+  deleteMany?: Prisma.ValidationErrorScalarWhereInput | Prisma.ValidationErrorScalarWhereInput[]
+}
+
+export type ValidationErrorUncheckedUpdateManyWithoutPayrollRunNestedInput = {
+  create?: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRunInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput> | Prisma.ValidationErrorCreateWithoutPayrollRunInput[] | Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput[]
+  connectOrCreate?: Prisma.ValidationErrorCreateOrConnectWithoutPayrollRunInput | Prisma.ValidationErrorCreateOrConnectWithoutPayrollRunInput[]
+  upsert?: Prisma.ValidationErrorUpsertWithWhereUniqueWithoutPayrollRunInput | Prisma.ValidationErrorUpsertWithWhereUniqueWithoutPayrollRunInput[]
+  createMany?: Prisma.ValidationErrorCreateManyPayrollRunInputEnvelope
+  set?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  disconnect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  delete?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  connect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  update?: Prisma.ValidationErrorUpdateWithWhereUniqueWithoutPayrollRunInput | Prisma.ValidationErrorUpdateWithWhereUniqueWithoutPayrollRunInput[]
+  updateMany?: Prisma.ValidationErrorUpdateManyWithWhereWithoutPayrollRunInput | Prisma.ValidationErrorUpdateManyWithWhereWithoutPayrollRunInput[]
+  deleteMany?: Prisma.ValidationErrorScalarWhereInput | Prisma.ValidationErrorScalarWhereInput[]
+}
+
+export type ValidationErrorCreateNestedManyWithoutPayrollRecordInput = {
+  create?: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRecordInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput> | Prisma.ValidationErrorCreateWithoutPayrollRecordInput[] | Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput[]
+  connectOrCreate?: Prisma.ValidationErrorCreateOrConnectWithoutPayrollRecordInput | Prisma.ValidationErrorCreateOrConnectWithoutPayrollRecordInput[]
+  createMany?: Prisma.ValidationErrorCreateManyPayrollRecordInputEnvelope
+  connect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+}
+
+export type ValidationErrorUncheckedCreateNestedManyWithoutPayrollRecordInput = {
+  create?: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRecordInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput> | Prisma.ValidationErrorCreateWithoutPayrollRecordInput[] | Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput[]
+  connectOrCreate?: Prisma.ValidationErrorCreateOrConnectWithoutPayrollRecordInput | Prisma.ValidationErrorCreateOrConnectWithoutPayrollRecordInput[]
+  createMany?: Prisma.ValidationErrorCreateManyPayrollRecordInputEnvelope
+  connect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+}
+
+export type ValidationErrorUpdateManyWithoutPayrollRecordNestedInput = {
+  create?: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRecordInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput> | Prisma.ValidationErrorCreateWithoutPayrollRecordInput[] | Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput[]
+  connectOrCreate?: Prisma.ValidationErrorCreateOrConnectWithoutPayrollRecordInput | Prisma.ValidationErrorCreateOrConnectWithoutPayrollRecordInput[]
+  upsert?: Prisma.ValidationErrorUpsertWithWhereUniqueWithoutPayrollRecordInput | Prisma.ValidationErrorUpsertWithWhereUniqueWithoutPayrollRecordInput[]
+  createMany?: Prisma.ValidationErrorCreateManyPayrollRecordInputEnvelope
+  set?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  disconnect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  delete?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  connect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  update?: Prisma.ValidationErrorUpdateWithWhereUniqueWithoutPayrollRecordInput | Prisma.ValidationErrorUpdateWithWhereUniqueWithoutPayrollRecordInput[]
+  updateMany?: Prisma.ValidationErrorUpdateManyWithWhereWithoutPayrollRecordInput | Prisma.ValidationErrorUpdateManyWithWhereWithoutPayrollRecordInput[]
+  deleteMany?: Prisma.ValidationErrorScalarWhereInput | Prisma.ValidationErrorScalarWhereInput[]
+}
+
+export type ValidationErrorUncheckedUpdateManyWithoutPayrollRecordNestedInput = {
+  create?: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRecordInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput> | Prisma.ValidationErrorCreateWithoutPayrollRecordInput[] | Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput[]
+  connectOrCreate?: Prisma.ValidationErrorCreateOrConnectWithoutPayrollRecordInput | Prisma.ValidationErrorCreateOrConnectWithoutPayrollRecordInput[]
+  upsert?: Prisma.ValidationErrorUpsertWithWhereUniqueWithoutPayrollRecordInput | Prisma.ValidationErrorUpsertWithWhereUniqueWithoutPayrollRecordInput[]
+  createMany?: Prisma.ValidationErrorCreateManyPayrollRecordInputEnvelope
+  set?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  disconnect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  delete?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  connect?: Prisma.ValidationErrorWhereUniqueInput | Prisma.ValidationErrorWhereUniqueInput[]
+  update?: Prisma.ValidationErrorUpdateWithWhereUniqueWithoutPayrollRecordInput | Prisma.ValidationErrorUpdateWithWhereUniqueWithoutPayrollRecordInput[]
+  updateMany?: Prisma.ValidationErrorUpdateManyWithWhereWithoutPayrollRecordInput | Prisma.ValidationErrorUpdateManyWithWhereWithoutPayrollRecordInput[]
+  deleteMany?: Prisma.ValidationErrorScalarWhereInput | Prisma.ValidationErrorScalarWhereInput[]
+}
+
+export type ValidationErrorCreateWithoutPayrollRunInput = {
+  staffNumber?: string | null
+  type: string
+  message: string
+  severity?: string | null
+  isResolved?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  PayrollRecord?: Prisma.PayrollRecordCreateNestedOneWithoutValidationErrorInput
+}
+
+export type ValidationErrorUncheckedCreateWithoutPayrollRunInput = {
+  id?: number
+  payrollRecordId?: number | null
+  staffNumber?: string | null
+  type: string
+  message: string
+  severity?: string | null
+  isResolved?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ValidationErrorCreateOrConnectWithoutPayrollRunInput = {
+  where: Prisma.ValidationErrorWhereUniqueInput
+  create: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRunInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput>
+}
+
+export type ValidationErrorCreateManyPayrollRunInputEnvelope = {
+  data: Prisma.ValidationErrorCreateManyPayrollRunInput | Prisma.ValidationErrorCreateManyPayrollRunInput[]
+  skipDuplicates?: boolean
+}
+
+export type ValidationErrorUpsertWithWhereUniqueWithoutPayrollRunInput = {
+  where: Prisma.ValidationErrorWhereUniqueInput
+  update: Prisma.XOR<Prisma.ValidationErrorUpdateWithoutPayrollRunInput, Prisma.ValidationErrorUncheckedUpdateWithoutPayrollRunInput>
+  create: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRunInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRunInput>
+}
+
+export type ValidationErrorUpdateWithWhereUniqueWithoutPayrollRunInput = {
+  where: Prisma.ValidationErrorWhereUniqueInput
+  data: Prisma.XOR<Prisma.ValidationErrorUpdateWithoutPayrollRunInput, Prisma.ValidationErrorUncheckedUpdateWithoutPayrollRunInput>
+}
+
+export type ValidationErrorUpdateManyWithWhereWithoutPayrollRunInput = {
+  where: Prisma.ValidationErrorScalarWhereInput
+  data: Prisma.XOR<Prisma.ValidationErrorUpdateManyMutationInput, Prisma.ValidationErrorUncheckedUpdateManyWithoutPayrollRunInput>
+}
+
+export type ValidationErrorScalarWhereInput = {
+  AND?: Prisma.ValidationErrorScalarWhereInput | Prisma.ValidationErrorScalarWhereInput[]
+  OR?: Prisma.ValidationErrorScalarWhereInput[]
+  NOT?: Prisma.ValidationErrorScalarWhereInput | Prisma.ValidationErrorScalarWhereInput[]
+  id?: Prisma.IntFilter<"ValidationError"> | number
+  payrollRunId?: Prisma.IntFilter<"ValidationError"> | number
+  payrollRecordId?: Prisma.IntNullableFilter<"ValidationError"> | number | null
+  staffNumber?: Prisma.StringNullableFilter<"ValidationError"> | string | null
+  type?: Prisma.StringFilter<"ValidationError"> | string
+  message?: Prisma.StringFilter<"ValidationError"> | string
+  severity?: Prisma.StringNullableFilter<"ValidationError"> | string | null
+  isResolved?: Prisma.BoolNullableFilter<"ValidationError"> | boolean | null
+  createdAt?: Prisma.DateTimeFilter<"ValidationError"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ValidationError"> | Date | string
+}
+
+export type ValidationErrorCreateWithoutPayrollRecordInput = {
+  staffNumber?: string | null
+  type: string
+  message: string
+  severity?: string | null
+  isResolved?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  PayrollRun: Prisma.PayrollRunCreateNestedOneWithoutValidationErrorInput
+}
+
+export type ValidationErrorUncheckedCreateWithoutPayrollRecordInput = {
+  id?: number
+  payrollRunId: number
+  staffNumber?: string | null
+  type: string
+  message: string
+  severity?: string | null
+  isResolved?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ValidationErrorCreateOrConnectWithoutPayrollRecordInput = {
+  where: Prisma.ValidationErrorWhereUniqueInput
+  create: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRecordInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput>
+}
+
+export type ValidationErrorCreateManyPayrollRecordInputEnvelope = {
+  data: Prisma.ValidationErrorCreateManyPayrollRecordInput | Prisma.ValidationErrorCreateManyPayrollRecordInput[]
+  skipDuplicates?: boolean
+}
+
+export type ValidationErrorUpsertWithWhereUniqueWithoutPayrollRecordInput = {
+  where: Prisma.ValidationErrorWhereUniqueInput
+  update: Prisma.XOR<Prisma.ValidationErrorUpdateWithoutPayrollRecordInput, Prisma.ValidationErrorUncheckedUpdateWithoutPayrollRecordInput>
+  create: Prisma.XOR<Prisma.ValidationErrorCreateWithoutPayrollRecordInput, Prisma.ValidationErrorUncheckedCreateWithoutPayrollRecordInput>
+}
+
+export type ValidationErrorUpdateWithWhereUniqueWithoutPayrollRecordInput = {
+  where: Prisma.ValidationErrorWhereUniqueInput
+  data: Prisma.XOR<Prisma.ValidationErrorUpdateWithoutPayrollRecordInput, Prisma.ValidationErrorUncheckedUpdateWithoutPayrollRecordInput>
+}
+
+export type ValidationErrorUpdateManyWithWhereWithoutPayrollRecordInput = {
+  where: Prisma.ValidationErrorScalarWhereInput
+  data: Prisma.XOR<Prisma.ValidationErrorUpdateManyMutationInput, Prisma.ValidationErrorUncheckedUpdateManyWithoutPayrollRecordInput>
+}
+
+export type ValidationErrorCreateManyPayrollRunInput = {
+  id?: number
+  payrollRecordId?: number | null
+  staffNumber?: string | null
+  type: string
+  message: string
+  severity?: string | null
+  isResolved?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ValidationErrorUpdateWithoutPayrollRunInput = {
+  staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  PayrollRecord?: Prisma.PayrollRecordUpdateOneWithoutValidationErrorNestedInput
+}
+
+export type ValidationErrorUncheckedUpdateWithoutPayrollRunInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  payrollRecordId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ValidationErrorUncheckedUpdateManyWithoutPayrollRunInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  payrollRecordId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ValidationErrorCreateManyPayrollRecordInput = {
+  id?: number
+  payrollRunId: number
+  staffNumber?: string | null
+  type: string
+  message: string
+  severity?: string | null
+  isResolved?: boolean | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ValidationErrorUpdateWithoutPayrollRecordInput = {
+  staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  PayrollRun?: Prisma.PayrollRunUpdateOneRequiredWithoutValidationErrorNestedInput
+}
+
+export type ValidationErrorUncheckedUpdateWithoutPayrollRecordInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  payrollRunId?: Prisma.IntFieldUpdateOperationsInput | number
+  staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ValidationErrorUncheckedUpdateManyWithoutPayrollRecordInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  payrollRunId?: Prisma.IntFieldUpdateOperationsInput | number
+  staffNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isResolved?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -376,61 +779,92 @@ export type ValidationErrorMinOrderByAggregateInput = {
 export type ValidationErrorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   payrollRunId?: boolean
-  errorType?: boolean
+  payrollRecordId?: boolean
   staffNumber?: boolean
-  staffName?: boolean
+  type?: boolean
   message?: boolean
   severity?: boolean
+  isResolved?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  PayrollRecord?: boolean | Prisma.ValidationError$PayrollRecordArgs<ExtArgs>
+  PayrollRun?: boolean | Prisma.PayrollRunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["validationError"]>
 
 export type ValidationErrorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   payrollRunId?: boolean
-  errorType?: boolean
+  payrollRecordId?: boolean
   staffNumber?: boolean
-  staffName?: boolean
+  type?: boolean
   message?: boolean
   severity?: boolean
+  isResolved?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  PayrollRecord?: boolean | Prisma.ValidationError$PayrollRecordArgs<ExtArgs>
+  PayrollRun?: boolean | Prisma.PayrollRunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["validationError"]>
 
 export type ValidationErrorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   payrollRunId?: boolean
-  errorType?: boolean
+  payrollRecordId?: boolean
   staffNumber?: boolean
-  staffName?: boolean
+  type?: boolean
   message?: boolean
   severity?: boolean
+  isResolved?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  PayrollRecord?: boolean | Prisma.ValidationError$PayrollRecordArgs<ExtArgs>
+  PayrollRun?: boolean | Prisma.PayrollRunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["validationError"]>
 
 export type ValidationErrorSelectScalar = {
   id?: boolean
   payrollRunId?: boolean
-  errorType?: boolean
+  payrollRecordId?: boolean
   staffNumber?: boolean
-  staffName?: boolean
+  type?: boolean
   message?: boolean
   severity?: boolean
+  isResolved?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type ValidationErrorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "payrollRunId" | "errorType" | "staffNumber" | "staffName" | "message" | "severity" | "createdAt", ExtArgs["result"]["validationError"]>
+export type ValidationErrorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "payrollRunId" | "payrollRecordId" | "staffNumber" | "type" | "message" | "severity" | "isResolved" | "createdAt" | "updatedAt", ExtArgs["result"]["validationError"]>
+export type ValidationErrorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  PayrollRecord?: boolean | Prisma.ValidationError$PayrollRecordArgs<ExtArgs>
+  PayrollRun?: boolean | Prisma.PayrollRunDefaultArgs<ExtArgs>
+}
+export type ValidationErrorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  PayrollRecord?: boolean | Prisma.ValidationError$PayrollRecordArgs<ExtArgs>
+  PayrollRun?: boolean | Prisma.PayrollRunDefaultArgs<ExtArgs>
+}
+export type ValidationErrorIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  PayrollRecord?: boolean | Prisma.ValidationError$PayrollRecordArgs<ExtArgs>
+  PayrollRun?: boolean | Prisma.PayrollRunDefaultArgs<ExtArgs>
+}
 
 export type $ValidationErrorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ValidationError"
-  objects: {}
+  objects: {
+    PayrollRecord: Prisma.$PayrollRecordPayload<ExtArgs> | null
+    PayrollRun: Prisma.$PayrollRunPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: string
-    payrollRunId: string
-    errorType: string
+    id: number
+    payrollRunId: number
+    payrollRecordId: number | null
     staffNumber: string | null
-    staffName: string | null
+    type: string
     message: string
-    severity: string
+    severity: string | null
+    isResolved: boolean | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["validationError"]>
   composites: {}
 }
@@ -825,6 +1259,8 @@ readonly fields: ValidationErrorFieldRefs;
  */
 export interface Prisma__ValidationErrorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  PayrollRecord<T extends Prisma.ValidationError$PayrollRecordArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ValidationError$PayrollRecordArgs<ExtArgs>>): Prisma.Prisma__PayrollRecordClient<runtime.Types.Result.GetResult<Prisma.$PayrollRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  PayrollRun<T extends Prisma.PayrollRunDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PayrollRunDefaultArgs<ExtArgs>>): Prisma.Prisma__PayrollRunClient<runtime.Types.Result.GetResult<Prisma.$PayrollRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -854,14 +1290,16 @@ export interface Prisma__ValidationErrorClient<T, Null = never, ExtArgs extends 
  * Fields of the ValidationError model
  */
 export interface ValidationErrorFieldRefs {
-  readonly id: Prisma.FieldRef<"ValidationError", 'String'>
-  readonly payrollRunId: Prisma.FieldRef<"ValidationError", 'String'>
-  readonly errorType: Prisma.FieldRef<"ValidationError", 'String'>
+  readonly id: Prisma.FieldRef<"ValidationError", 'Int'>
+  readonly payrollRunId: Prisma.FieldRef<"ValidationError", 'Int'>
+  readonly payrollRecordId: Prisma.FieldRef<"ValidationError", 'Int'>
   readonly staffNumber: Prisma.FieldRef<"ValidationError", 'String'>
-  readonly staffName: Prisma.FieldRef<"ValidationError", 'String'>
+  readonly type: Prisma.FieldRef<"ValidationError", 'String'>
   readonly message: Prisma.FieldRef<"ValidationError", 'String'>
   readonly severity: Prisma.FieldRef<"ValidationError", 'String'>
+  readonly isResolved: Prisma.FieldRef<"ValidationError", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"ValidationError", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ValidationError", 'DateTime'>
 }
     
 
@@ -878,6 +1316,10 @@ export type ValidationErrorFindUniqueArgs<ExtArgs extends runtime.Types.Extensio
    * Omit specific fields from the ValidationError
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
   /**
    * Filter, which ValidationError to fetch.
    */
@@ -897,6 +1339,10 @@ export type ValidationErrorFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.E
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
+  /**
    * Filter, which ValidationError to fetch.
    */
   where: Prisma.ValidationErrorWhereUniqueInput
@@ -914,6 +1360,10 @@ export type ValidationErrorFindFirstArgs<ExtArgs extends runtime.Types.Extension
    * Omit specific fields from the ValidationError
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
   /**
    * Filter, which ValidationError to fetch.
    */
@@ -963,6 +1413,10 @@ export type ValidationErrorFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ex
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
+  /**
    * Filter, which ValidationError to fetch.
    */
   where?: Prisma.ValidationErrorWhereInput
@@ -1010,6 +1464,10 @@ export type ValidationErrorFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the ValidationError
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
   /**
    * Filter, which ValidationErrors to fetch.
    */
@@ -1059,6 +1517,10 @@ export type ValidationErrorCreateArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
+  /**
    * The data needed to create a ValidationError.
    */
   data: Prisma.XOR<Prisma.ValidationErrorCreateInput, Prisma.ValidationErrorUncheckedCreateInput>
@@ -1092,6 +1554,10 @@ export type ValidationErrorCreateManyAndReturnArgs<ExtArgs extends runtime.Types
    */
   data: Prisma.ValidationErrorCreateManyInput | Prisma.ValidationErrorCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1106,6 +1572,10 @@ export type ValidationErrorUpdateArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the ValidationError
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
   /**
    * The data needed to update a ValidationError.
    */
@@ -1158,6 +1628,10 @@ export type ValidationErrorUpdateManyAndReturnArgs<ExtArgs extends runtime.Types
    * Limit how many ValidationErrors to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1172,6 +1646,10 @@ export type ValidationErrorUpsertArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the ValidationError
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
   /**
    * The filter to search for the ValidationError to update in case it exists.
    */
@@ -1199,6 +1677,10 @@ export type ValidationErrorDeleteArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
+  /**
    * Filter which ValidationError to delete.
    */
   where: Prisma.ValidationErrorWhereUniqueInput
@@ -1219,6 +1701,25 @@ export type ValidationErrorDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
+ * ValidationError.PayrollRecord
+ */
+export type ValidationError$PayrollRecordArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayrollRecord
+   */
+  select?: Prisma.PayrollRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayrollRecord
+   */
+  omit?: Prisma.PayrollRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayrollRecordInclude<ExtArgs> | null
+  where?: Prisma.PayrollRecordWhereInput
+}
+
+/**
  * ValidationError without action
  */
 export type ValidationErrorDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1230,4 +1731,8 @@ export type ValidationErrorDefaultArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the ValidationError
    */
   omit?: Prisma.ValidationErrorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ValidationErrorInclude<ExtArgs> | null
 }

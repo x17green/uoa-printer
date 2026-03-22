@@ -1,12 +1,34 @@
-import * as XLSX from 'xlsx';
-import { Decimal } from '@prisma/client/runtime/library';
+import * as XLSX from "xlsx";
+import { generateStaffId } from "@/lib/staff-id";
 
 export interface ParsedEmployee {
   staffNumber: string;
   fullName: string;
-  department: string;
-  staffType: 'ACADEMIC' | 'NON_ACADEMIC';
+  department?: string;
+  staffType: "ACADEMIC" | "NON_ACADEMIC";
+  dob?: string;
+  basicSalary: number;
+  grossPay: number;
+  totalDeductions: number;
+  netPay: number;
   components: { [key: string]: number };
+}
+
+export interface ValidationError {
+  type:
+    | "MISSING_STAFF"
+    | "MISSING_DOB"
+    | "MISSING_SHEET"
+    | "INVALID_NUMBER"
+    | "CALCULATION_MISMATCH"
+    | "DUPLICATE_ID";
+  staffNumber?: string;
+  staffName?: string;
+  sheet?: string;
+  message: string;
+  severity: "ERROR" | "WARNING";
+  row?: number;
+  column?: string;
 }
 
 export interface ParseResult {
@@ -21,215 +43,290 @@ export interface ParseResult {
   };
 }
 
-export interface ValidationError {
-  type: 'MISSING_STAFF' | 'MISSING_SHEET' | 'INVALID_AMOUNT' | 'DUPLICATE' | 'CALCULATION_MISMATCH';
-  staffNumber?: string;
-  staffName?: string;
-  message: string;
-  severity: 'ERROR' | 'WARNING';
+const MASTER_SHEETS = ["TEACHING STAFF", "NON TEACHING STAFF"];
+
+const NAME_HEADERS = ["NAME OF STAFF", "NAMES OF STAFF"];
+const DOB_HEADERS = ["DOB", "DATE OF BIRTH", "BIRTHDATE", "BIRTH DATE"];
+const GROSS_HEADERS = ["GROSS PAY", "GROSS PAYBEFORE", "GROSSPAY"];
+const DEDUCTION_HEADERS = ["TOTAL DEDUCTIONS", "TOT DEDUCT", "TOTAL DEDUCT"];
+const NET_HEADERS = ["NET PAY", "NETPAY", "NET_PAY"];
+
+const DEDUCTION_KEYWORDS = [
+  "ASUU",
+  "NHF",
+  "P.A.Y.E",
+  "PAYE",
+  "SALARY ADVANCE",
+  "LOAN",
+  "SCHOOL FEES",
+  "UTI",
+  "UTILITY",
+  "BHIS",
+  "NASU",
+  "BSETF",
+  "BURSARY",
+  "CO-OPERATIVE",
+  "GARNISHMENT",
+  "DEDUCTION",
+];
+
+function normalizeHeader(val: any): string {
+  if (val === null || val === undefined) return "";
+  return String(val).trim().toUpperCase();
 }
 
-const REQUIRED_SHEETS = [
-  'Staff List',
-  'Basic Salary',
-  'Gross Pay',
-];
+function findHeaderIndex(row: any[], candidates: string[]): number | null {
+  const normalized = row.map(normalizeHeader);
+  for (const candidate of candidates) {
+    const idx = normalized.indexOf(candidate.toUpperCase());
+    if (idx >= 0) return idx;
+  }
+  return null;
+}
 
-const DEDUCTION_SHEETS = [
-  'ASUU Deduction',
-  'BHIS',
-  'NECA',
-  'Staff Loan',
-  'Garnishment',
-  'Tax Deduction',
-  'Union Dues',
-  'Health Insurance',
-  'Pension Contribution',
-  'Others',
-];
+function parseNumber(value: any): number {
+  if (value === null || value === undefined || value === "") return 0;
+  if (typeof value === "number") return value;
+  const cleaned = String(value).replace(/,/g, "").trim();
+  const parsed = parseFloat(cleaned);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+
+function isDeductionHeader(header: string): boolean {
+  const normalized = header.toUpperCase();
+  return DEDUCTION_KEYWORDS.some((keyword) => normalized.includes(keyword));
+}
 
 export async function parsePayrollExcel(
   buffer: Buffer,
   month: number,
-  year: number
+  year: number,
 ): Promise<ParseResult> {
   const errors: ValidationError[] = [];
   const employees: ParsedEmployee[] = [];
 
   try {
-    // Read workbook
-    const workbook = XLSX.read(buffer, { type: 'buffer' });
-    const sheetNames = workbook.SheetNames;
+    const workbook = XLSX.read(buffer, { type: "buffer" });
+    const sheetNames = workbook.SheetNames.map((s) => s.toUpperCase());
 
-    console.log('[v0] Excel file has sheets:', sheetNames);
-
-    // Validate required sheets
-    const missingSheets = REQUIRED_SHEETS.filter(
-      (sheet) => !sheetNames.includes(sheet)
+    const availableSheets = MASTER_SHEETS.filter((sheet) =>
+      sheetNames.includes(sheet.toUpperCase()),
     );
 
-    if (missingSheets.length > 0) {
+    if (availableSheets.length === 0) {
       errors.push({
-        type: 'MISSING_SHEET',
-        message: `Missing required sheets: ${missingSheets.join(', ')}`,
-        severity: 'ERROR',
+        type: "MISSING_SHEET",
+        message: `Missing required sheets: ${MASTER_SHEETS.join(
+          ", ",
+        )}. Found: ${workbook.SheetNames.join(", ")}`,
+        severity: "ERROR",
       });
-      return { success: false, employees: [], errors, metadata: { month, year, totalRecords: 0, sheetNames } };
+      return {
+        success: false,
+        employees: [],
+        errors,
+        metadata: {
+          month,
+          year,
+          totalRecords: 0,
+          sheetNames: workbook.SheetNames,
+        },
+      };
     }
 
-    // Parse Staff List
-    const staffListSheet = workbook.Sheets['Staff List'];
-    const staffData = XLSX.utils.sheet_to_json<any>(staffListSheet);
+    const usedStaffIds = new Set<string>();
 
-    if (!staffData || staffData.length === 0) {
-      errors.push({
-        type: 'MISSING_STAFF',
-        message: 'Staff List sheet is empty',
-        severity: 'ERROR',
-      });
-      return { success: false, employees: [], errors, metadata: { month, year, totalRecords: 0, sheetNames } };
-    }
+    const parseSheet = (sheetName: string) => {
+      const sheet = workbook.Sheets[sheetName];
+      const rawRows: any[][] = XLSX.utils.sheet_to_json(sheet, {
+        header: 1,
+        blankrows: false,
+        raw: false,
+      }) as any[][];
 
-    // Create staff map
-    const staffMap = new Map<string, any>();
-    const staffNumbers = new Set<string>();
+      if (rawRows.length === 0) return;
 
-    staffData.forEach((staff: any, index: number) => {
-      const staffNumber = String(staff['Staff Number'] || staff['staffNumber'] || '').trim();
-      const fullName = String(staff['Full Name'] || staff['fullName'] || '').trim();
-      const department = String(staff['Department'] || staff['department'] || '').trim();
-      const staffType = String(staff['Staff Type'] || staff['staffType'] || 'NON_ACADEMIC').toUpperCase();
-
-      if (!staffNumber) {
-        errors.push({
-          type: 'MISSING_STAFF',
-          staffName: fullName,
-          message: `Row ${index + 2}: Staff number is missing`,
-          severity: 'ERROR',
-        });
-        return;
-      }
-
-      if (staffNumbers.has(staffNumber)) {
-        errors.push({
-          type: 'DUPLICATE',
-          staffNumber,
-          staffName: fullName,
-          message: `Duplicate staff number: ${staffNumber}`,
-          severity: 'ERROR',
-        });
-        return;
-      }
-
-      staffNumbers.add(staffNumber);
-      staffMap.set(staffNumber, {
-        staffNumber,
-        fullName,
-        department,
-        staffType: staffType === 'ACADEMIC' ? 'ACADEMIC' : 'NON_ACADEMIC',
-      });
-    });
-
-    // Parse earnings and deductions from each sheet
-    const basicSalarySheet = workbook.Sheets['Basic Salary'];
-    const basicSalaryData = XLSX.utils.sheet_to_json<any>(basicSalarySheet);
-
-    const grossPaySheet = workbook.Sheets['Gross Pay'];
-    const grossPayData = XLSX.utils.sheet_to_json<any>(grossPaySheet);
-
-    // Build employee records with all components
-    staffMap.forEach((staff) => {
-      const components: { [key: string]: number } = {};
-
-      // Get basic salary
-      const basicSalaryRecord = basicSalaryData.find(
-        (row: any) => String(row['Staff Number'] || row['staffNumber'] || '').trim() === staff.staffNumber
-      );
-      if (basicSalaryRecord) {
-        components['Basic Salary'] = parseAmount(basicSalaryRecord['Amount'] || basicSalaryRecord['amount']);
-      }
-
-      // Get gross pay
-      const grossPayRecord = grossPayData.find(
-        (row: any) => String(row['Staff Number'] || row['staffNumber'] || '').trim() === staff.staffNumber
-      );
-      if (grossPayRecord) {
-        components['Gross Pay'] = parseAmount(grossPayRecord['Amount'] || grossPayRecord['amount']);
-      }
-
-      // Get deductions from each sheet
-      DEDUCTION_SHEETS.forEach((sheetName) => {
-        if (sheetNames.includes(sheetName)) {
-          const sheet = workbook.Sheets[sheetName];
-          const data = XLSX.utils.sheet_to_json<any>(sheet);
-          
-          const record = data.find(
-            (row: any) => String(row['Staff Number'] || row['staffNumber'] || '').trim() === staff.staffNumber
-          );
-
-          if (record) {
-            const amount = parseAmount(record['Amount'] || record['amount']);
-            if (amount > 0) {
-              components[sheetName] = amount;
-            }
-          }
+      // Find header row (first row containing "STAFF" and "NAME")
+      let headerRowIndex = 0;
+      for (let i = 0; i < rawRows.length; i += 1) {
+        const row = rawRows[i];
+        if (!Array.isArray(row)) continue;
+        const joined = row.map((c) => normalizeHeader(c)).join(" ");
+        if (joined.includes("STAFF") && joined.includes("NAME")) {
+          headerRowIndex = i;
+          break;
         }
-      });
-
-      // Calculate totals
-      const basicSalary = components['Basic Salary'] || 0;
-      const grossPay = components['Gross Pay'] || 0;
-      const totalDeductions = Object.entries(components)
-        .filter(([key]) => DEDUCTION_SHEETS.includes(key))
-        .reduce((sum, [, value]) => sum + value, 0);
-
-      // Validate calculations
-      const expectedNetPay = grossPay - totalDeductions;
-      
-      // Add validation for income vs deduction balance
-      if (grossPay > 0 && basicSalary > grossPay * 1.1) {
-        errors.push({
-          type: 'CALCULATION_MISMATCH',
-          staffNumber: staff.staffNumber,
-          staffName: staff.fullName,
-          message: `Basic salary (${basicSalary}) exceeds gross pay (${grossPay})`,
-          severity: 'WARNING',
-        });
       }
 
-      employees.push({
-        ...staff,
-        components,
-      });
-    });
+      const headerRow = rawRows[headerRowIndex].map((c) => normalizeHeader(c));
+
+      const nameCol =
+        findHeaderIndex(headerRow, NAME_HEADERS) ??
+        findHeaderIndex(headerRow, ["NAME"]);
+      const dobCol = findHeaderIndex(headerRow, DOB_HEADERS);
+      const departmentCol =
+        findHeaderIndex(headerRow, ["DEPARTMENT"]) ??
+        findHeaderIndex(headerRow, ["DEPT"]);
+      const jobCol =
+        findHeaderIndex(headerRow, ["JOB DESCRIPTION"]) ??
+        findHeaderIndex(headerRow, ["POSITION"]);
+      const gradeCol =
+        findHeaderIndex(headerRow, ["GRADE/STEP"]) ??
+        findHeaderIndex(headerRow, ["GRADE NAME"]) ??
+        findHeaderIndex(headerRow, ["GRADE"]);
+      const bankCol =
+        findHeaderIndex(headerRow, ["BANK NAME"]) ??
+        findHeaderIndex(headerRow, ["BANK"]);
+      const acctCol =
+        findHeaderIndex(headerRow, [
+          "ACCT NO",
+          "ACCOUNT NO",
+          "ACCOUNT NUMBER",
+        ]) ?? findHeaderIndex(headerRow, ["ACCOUNT NUMBE"]);
+
+      const basicSalaryCol =
+        findHeaderIndex(headerRow, ["NEW BASIC", "ANNUAL SALARY"]) ??
+        findHeaderIndex(headerRow, ["BASIC SALARY"]);
+      const grossCol = findHeaderIndex(headerRow, GROSS_HEADERS);
+      const deductionCol = findHeaderIndex(headerRow, DEDUCTION_HEADERS);
+      const netCol = findHeaderIndex(headerRow, NET_HEADERS);
+
+      for (let r = headerRowIndex + 1; r < rawRows.length; r += 1) {
+        const row = rawRows[r];
+        if (!Array.isArray(row)) continue;
+
+        // Skip entirely empty rows
+        const rowFilled = row.some(
+          (cell) =>
+            cell !== null && cell !== undefined && String(cell).trim() !== "",
+        );
+        if (!rowFilled) continue;
+
+        const name = nameCol !== null ? String(row[nameCol] || "").trim() : "";
+        const dob = dobCol !== null ? String(row[dobCol] || "").trim() : "";
+        const department =
+          departmentCol !== null ? String(row[departmentCol] || "").trim() : "";
+        const staffType = sheetName.toUpperCase().includes("TEACHING")
+          ? "ACADEMIC"
+          : "NON_ACADEMIC";
+
+        if (!name) {
+          errors.push({
+            type: "MISSING_STAFF",
+            message: `Missing staff name at row ${r + 1} in sheet "${sheetName}"`,
+            severity: "ERROR",
+            sheet: sheetName,
+            row: r + 1,
+          });
+          continue;
+        }
+
+        if (!dob) {
+          errors.push({
+            type: "MISSING_DOB",
+            staffName: name,
+            message: `Missing DOB for staff "${name}" at row ${r + 1} in sheet "${sheetName}"`,
+            severity: "ERROR",
+            sheet: sheetName,
+            row: r + 1,
+          });
+        }
+
+        const staffNumber = generateStaffId(name, dob, usedStaffIds);
+
+        const components: { [key: string]: number } = {};
+
+        // Parse all columns as potential components (except known meta fields)
+        for (let ci = 0; ci < headerRow.length; ci += 1) {
+          const header = normalizeHeader(headerRow[ci]);
+          if (!header) continue;
+
+          // Skip meta columns
+          if (
+            [nameCol, dobCol, departmentCol, jobCol, gradeCol, bankCol, acctCol]
+              .filter((x) => x !== null)
+              .includes(ci)
+          ) {
+            continue;
+          }
+          if ([grossCol, deductionCol, netCol].includes(ci)) {
+            continue;
+          }
+
+          const value = row[ci];
+          const amount = parseNumber(value);
+          if (amount === 0) continue;
+
+          // classifying deduction vs income
+          const isDeduction = isDeductionHeader(header);
+          components[header] = amount;
+        }
+
+        const basicSalary =
+          basicSalaryCol !== null ? parseNumber(row[basicSalaryCol]) : 0;
+        const gross = grossCol !== null ? parseNumber(row[grossCol]) : 0;
+        const totalDeductions =
+          deductionCol !== null ? parseNumber(row[deductionCol]) : 0;
+        const net = netCol !== null ? parseNumber(row[netCol]) : 0;
+
+        const calcNet = gross - totalDeductions;
+        const netDelta = net - calcNet;
+
+        if (!Number.isNaN(netDelta) && Math.abs(netDelta) > 0.01) {
+          errors.push({
+            type: "CALCULATION_MISMATCH",
+            staffNumber,
+            staffName: name,
+            message: `Net pay differs (expected ${net}, computed ${calcNet})`,
+            severity: "WARNING",
+            sheet: sheetName,
+            row: r + 1,
+            column: headerRow[netCol ?? -1] as string,
+          });
+        }
+
+        employees.push({
+          staffNumber,
+          fullName: name,
+          department,
+          staffType,
+          dob: dob || undefined,
+          basicSalary,
+          grossPay: gross,
+          totalDeductions,
+          netPay: net,
+          components,
+        });
+      }
+    };
+
+    availableSheets.forEach(parseSheet);
+
+    const success = errors.filter((e) => e.severity === "ERROR").length === 0;
 
     return {
-      success: errors.filter((e) => e.severity === 'ERROR').length === 0,
+      success,
       employees,
       errors,
       metadata: {
         month,
         year,
         totalRecords: employees.length,
-        sheetNames,
+        sheetNames: workbook.SheetNames,
       },
     };
   } catch (error) {
-    console.error('[v0] Excel parsing error:', error);
     errors.push({
-      type: 'MISSING_SHEET',
-      message: `Failed to parse Excel file: ${error instanceof Error ? error.message : 'Unknown error'}`,
-      severity: 'ERROR',
+      type: "MISSING_SHEET",
+      message: `Failed to parse Excel: ${error instanceof Error ? error.message : "Unknown"}`,
+      severity: "ERROR",
     });
-    return { success: false, employees: [], errors, metadata: { month, year, totalRecords: 0, sheetNames: [] } };
+    return {
+      success: false,
+      employees: [],
+      errors,
+      metadata: { month, year, totalRecords: 0, sheetNames: [] },
+    };
   }
-}
-
-function parseAmount(value: any): number {
-  if (value === null || value === undefined || value === '') {
-    return 0;
-  }
-  
-  const parsed = parseFloat(String(value).replace(/[^\d.-]/g, ''));
-  return isNaN(parsed) ? 0 : Math.abs(parsed);
 }
