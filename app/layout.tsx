@@ -58,7 +58,7 @@ export default function RootLayout({
                 <a href="#" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Print & Export</a>
               </nav>
               <div className="mt-auto text-xs text-muted-foreground">
-                <p>UoA Payroll v1.0</p>
+                <p>UoAfrica Payroll v1.0</p>
                 <p>Powered by University of African</p>
               </div>
             </aside>
