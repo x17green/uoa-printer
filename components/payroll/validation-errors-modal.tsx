@@ -2,10 +2,6 @@
 
 import { useState } from 'react';
 import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
   Chip,
   Table,
   TableHeader,
@@ -14,6 +10,8 @@ import {
   TableRow,
   TableCell,
 } from '@heroui/react';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogTrigger,
@@ -66,22 +64,22 @@ export function ValidationErrorsModal({ errors, totalRecords }: ValidationErrors
                 <div className="px-2 py-3 border-b border-border flex gap-2">
                   <Button
                     size="sm"
-                    color={viewType === 'ERROR' ? 'danger' : 'secondary'}
-                    onPress={() => setViewType('ERROR')}
+                    variant={viewType === 'ERROR' ? 'destructive' : 'secondary'}
+                    onClick={() => setViewType('ERROR')}
                   >
                     Errors ({errorCount})
                   </Button>
                   <Button
                     size="sm"
-                    color={viewType === 'WARNING' ? 'warning' : 'secondary'}
-                    onPress={() => setViewType('WARNING')}
+                    variant={viewType === 'WARNING' ? 'destructive' : 'secondary'}
+                    onClick={() => setViewType('WARNING')}
                   >
                     Warnings ({warningCount})
                   </Button>
                 </div>
 
                 <div className="h-[calc(100%-10rem)] overflow-auto pt-2 px-2">
-                  <Table aria-label="Validation errors" removeWrapper>
+                  <Table aria-label="Validation errors">
                     <TableHeader>
                       <TableColumn>TYPE</TableColumn>
                       <TableColumn>SHEET</TableColumn>
@@ -104,7 +102,7 @@ export function ValidationErrorsModal({ errors, totalRecords }: ValidationErrors
                             <Chip
                               color={error.severity === 'ERROR' ? 'danger' : 'warning'}
                               size="sm"
-                              variant="flat"
+
                             >
                               {error.severity}
                             </Chip>
@@ -124,11 +122,11 @@ export function ValidationErrorsModal({ errors, totalRecords }: ValidationErrors
             </Dialog>
           </div>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <p className="text-sm text-muted-foreground">
             Validation details are grouped in a modal for easier review.
           </p>
-        </CardBody>
+        </CardContent>
       </Card>
     </>
   );

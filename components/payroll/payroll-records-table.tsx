@@ -1,6 +1,8 @@
 'use client';
 
-import { Card, CardBody, CardHeader, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from '@heroui/react';
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/react';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 
 interface PayrollRecord {
@@ -46,21 +48,8 @@ export function PayrollRecordsTable({ records }: PayrollRecordsTableProps) {
           <p className="text-sm opacity-90">{records.length} total records</p>
         </div>
       </CardHeader>
-      <CardBody className="gap-4">
-        <Table aria-label="Payroll records" removeWrapper bottomContent={
-          pages > 1 ? (
-            <div className="flex w-full justify-center">
-              <Pagination
-                isCompact
-                loop
-                showControls
-                page={page}
-                total={pages}
-                onChange={setPage}
-              />
-            </div>
-          ) : null
-        }>
+      <CardContent className="gap-4">
+        <Table aria-label="Payroll records">
           <TableHeader>
             <TableColumn>STAFF NUMBER</TableColumn>
             <TableColumn>NAME</TableColumn>
@@ -93,7 +82,18 @@ export function PayrollRecordsTable({ records }: PayrollRecordsTableProps) {
             ))}
           </TableBody>
         </Table>
-      </CardBody>
+        {pages > 1 && (
+          <div className="flex items-center justify-center gap-2 mt-3">
+            <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1}>
+              Previous
+            </Button>
+            <span className="text-sm text-muted-foreground">Page {page} of {pages}</span>
+            <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(pages, p + 1))} disabled={page >= pages}>
+              Next
+            </Button>
+          </div>
+        )}
+      </CardContent>
     </Card>
   );
 }

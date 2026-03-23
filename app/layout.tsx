@@ -52,10 +52,11 @@ export default function RootLayout({
                 </div>
               </div>
               <nav className="flex flex-col gap-1">
-                <a href="#" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Dashboard</a>
-                <a href="#" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Upload Payroll</a>
-                <a href="#" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Validation Reports</a>
-                <a href="#" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Print & Export</a>
+                <a href="/" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Dashboard</a>
+                <a href="/payroll" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Payroll Runs</a>
+                <a href="/payroll/1/print" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Print Workflow</a>
+                <a href="/validation" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Validation Reports</a>
+                <a href="/settings" className="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700">Settings</a>
               </nav>
               <div className="mt-auto text-xs text-muted-foreground">
                 <p>UoAfrica Payroll v1.0</p>

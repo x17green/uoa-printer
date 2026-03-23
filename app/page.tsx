@@ -5,7 +5,10 @@ import { FileUploadZone } from '@/components/payroll/file-upload-zone';
 import { ValidationErrorsModal } from '@/components/payroll/validation-errors-modal';
 import { PayrollRecordsTable } from '@/components/payroll/payroll-records-table';
 import { PrintDialog } from '@/components/payroll/print-dialog';
-import { Card, CardBody, CardHeader, Spinner, Alert, Button, useDisclosure } from '@heroui/react';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Spinner } from '@/components/ui/spinner';
+import { Alert } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import type { ValidationError } from '@/lib/excel-parser';
 
@@ -39,7 +42,9 @@ export default function Dashboard() {
   >(null);
   const [existingRunId, setExistingRunId] = useState<number | null>(null);
   const [isPolling, setIsPolling] = useState(false);
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
+  const onOpen = () => setIsOpen(true);
+  const onClose = () => setIsOpen(false);
 
   const totalRecords = payrollRun?.totalRecords ?? payrollRun?.records.length ?? 0;
   const processedRecords = payrollRun?.processedRecords ?? 0;
@@ -311,9 +316,9 @@ export default function Dashboard() {
           {/* Loading State */}
           {isLoading && (
             <Card>
-              <CardBody className="flex items-center justify-center py-12">
-                <Spinner label="Processing payroll file..." />
-              </CardBody>
+              <CardContent className="flex items-center justify-center py-12">
+                <Spinner />
+              </CardContent>
             </Card>
           )}
 
@@ -330,8 +335,8 @@ export default function Dashboard() {
             <div className="space-y-4">
               <div className="flex flex-wrap justify-end gap-2">
                 <Button
-                  color="primary"
-                  onPress={onOpen}
+                  variant="default"
+                  onClick={onOpen}
                   className="gap-2"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -363,25 +368,25 @@ export default function Dashboard() {
           {payrollRun && (
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <Card>
-                <CardBody className="flex gap-3">
+                <CardContent className="flex gap-3">
                   <div>
                     <p className="text-sm text-muted-foreground">Total Records</p>
                     <p className="text-3xl font-bold text-foreground">{payrollRun.records.length}</p>
                   </div>
-                </CardBody>
+                </CardContent>
               </Card>
 
               <Card>
-                <CardBody className="flex gap-3">
+                <CardContent className="flex gap-3">
                   <div>
                     <p className="text-sm text-muted-foreground">Status</p>
                     <p className="text-2xl font-bold text-primary capitalize">{payrollRun.status}</p>
                   </div>
-                </CardBody>
+                </CardContent>
               </Card>
 
               <Card>
-                <CardBody className="flex flex-col gap-3">
+                <CardContent className="flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-muted-foreground">Progress</p>
@@ -390,11 +395,11 @@ export default function Dashboard() {
                     <p className="text-sm font-semibold text-muted-foreground">{progressPercent}%</p>
                   </div>
                   <Progress value={progressPercent} />
-                </CardBody>
+                </CardContent>
               </Card>
 
               <Card>
-                <CardBody className="flex gap-3">
+                <CardContent className="flex gap-3">
                   <div>
                     <p className="text-sm text-muted-foreground">Period</p>
                     <p className="text-2xl font-bold text-foreground">
@@ -404,11 +409,11 @@ export default function Dashboard() {
                       })}
                     </p>
                   </div>
-                </CardBody>
+                </CardContent>
               </Card>
 
               <Card>
-                <CardBody className="flex gap-3">
+                <CardContent className="flex gap-3">
                   <div>
                     <p className="text-sm text-muted-foreground">Total Gross</p>
                     <p className="text-2xl font-bold text-success">
@@ -422,7 +427,7 @@ export default function Dashboard() {
                       )}
                     </p>
                   </div>
-                </CardBody>
+                </CardContent>
               </Card>
             </div>
           )}

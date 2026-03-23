@@ -1,6 +1,5 @@
 'use client';
 
-import { HeroUIProvider } from '@heroui/react';
 import { Analytics } from '@vercel/analytics/next';
 
 interface ProvidersProps {
@@ -9,9 +8,9 @@ interface ProvidersProps {
 
 export function Providers({ children }: ProvidersProps) {
   return (
-    <HeroUIProvider>
+    <>
       {children}
       <Analytics />
-    </HeroUIProvider>
+    </>
   );
 }

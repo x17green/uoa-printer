@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Card, CardBody, CardHeader, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from '@heroui/react';
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/react';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Spinner } from '@/components/ui/spinner';
+import { Button } from '@/components/ui/button';
 
 interface PayrollRunSummary {
   id: string;
@@ -65,9 +68,9 @@ export default function PayrollRunsPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {loading && (
           <Card>
-            <CardBody className="flex items-center justify-center py-12">
-              <Spinner label="Loading payroll runs..." />
-            </CardBody>
+            <CardContent className="flex items-center justify-center py-12">
+              <Spinner />
+            </CardContent>
           </Card>
         )}
 
@@ -76,9 +79,9 @@ export default function PayrollRunsPage() {
             <CardHeader className="bg-danger text-danger-foreground">
               <div className="text-lg font-semibold">Error</div>
             </CardHeader>
-            <CardBody>
+            <CardContent>
               <p>{error}</p>
-            </CardBody>
+            </CardContent>
           </Card>
         )}
 
@@ -97,13 +100,13 @@ export default function PayrollRunsPage() {
                   className="rounded border border-border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <Link href="/">
-                  <Button variant="solid" size="sm">
+                  <Button variant="default" size="sm">
                     Upload New Payroll
                   </Button>
                 </Link>
               </div>
             </CardHeader>
-            <CardBody>
+            <CardContent>
               <Table>
                 <TableHeader>
                   <TableColumn>Period</TableColumn>
@@ -141,7 +144,7 @@ export default function PayrollRunsPage() {
                   ))}
                 </TableBody>
               </Table>
-            </CardBody>
+            </CardContent>
           </Card>
         )}
       </main>

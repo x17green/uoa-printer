@@ -9,7 +9,7 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: env("DATABASE_URL"),
-    shadowDatabaseUrl: env("DIRECT_URL")
+    url: env("POSTGRES_URL_NON_POOLING"),
+    shadowDatabaseUrl: env("POSTGRES_URL")
   },
 });

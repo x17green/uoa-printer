@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardBody, CardHeader, Spinner, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from '@heroui/react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Spinner } from '@/components/ui/spinner';
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/react';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 interface PayrollRecord {
@@ -64,9 +67,9 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
       <div className="min-h-screen bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Card>
-            <CardBody className="flex items-center justify-center py-12">
-              <Spinner label="Loading payroll run..." />
-            </CardBody>
+            <CardContent className="flex items-center justify-center py-12">
+              <Spinner />
+            </CardContent>
           </Card>
         </div>
       </div>
@@ -81,12 +84,12 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
             <CardHeader className="bg-danger text-danger-foreground">
               <div className="text-lg font-semibold">Error</div>
             </CardHeader>
-            <CardBody>
+            <CardContent>
               <p>{error || 'Payroll run not found'}</p>
-              <Button className="mt-4" onPress={() => router.push('/payroll')}>
+              <Button className="mt-4" onClick={() => router.push('/payroll')}>
                 Back to runs
               </Button>
-            </CardBody>
+            </CardContent>
           </Card>
         </div>
       </div>
@@ -118,9 +121,9 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
             </Link>
             <Button
               size="sm"
-              onPress={() => router.push(`/payroll/${run.id}/print?format=pdf`)}
+              onClick={() => router.push(`/payroll/${run.id}/print`)}
             >
-              Download PDF
+              Open Print Workflow
             </Button>
           </div>
         </div>
@@ -134,7 +137,7 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
                 {errors.filter((e) => e.severity === 'WARNING').length} warnings
               </div>
             </CardHeader>
-            <CardBody>
+            <CardContent>
               <Table>
                 <TableHeader>
                   <TableColumn>Type</TableColumn>
@@ -161,7 +164,7 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
                   ))}
                 </TableBody>
               </Table>
-            </CardBody>
+            </CardContent>
           </Card>
         )}
 
@@ -169,7 +172,7 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
           <CardHeader>
             <div className="text-lg font-semibold">Records</div>
           </CardHeader>
-          <CardBody>
+          <CardContent>
             <Table>
               <TableHeader>
                 <TableColumn>Staff</TableColumn>
@@ -192,8 +195,8 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
                     <TableCell>
                       <Button
                         size="sm"
-                        onPress={() =>
-                          router.push(`/payroll/${run.id}/print?staffNumber=${record.employee.staffNumber}&format=html`)
+                        onClick={() =>
+                          router.push(`/payroll/${run.id}/print?staffNumber=${record.employee.staffNumber}`)
                         }
                       >
                         Payslip
@@ -203,7 +206,7 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
                 ))}
               </TableBody>
             </Table>
-          </CardBody>
+          </CardContent>
         </Card>
       </main>
     </div>

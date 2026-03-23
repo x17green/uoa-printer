@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { Card, CardBody, CardHeader } from '@heroui/react';
-import { Button } from '@heroui/react';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface FileUploadZoneProps {
   onFileSelect: (
@@ -55,7 +55,7 @@ export function FileUploadZone({ onFileSelect, isLoading = false }: FileUploadZo
           <p className="text-sm opacity-90">Upload Excel file with payroll data</p>
         </div>
       </CardHeader>
-      <CardBody className="gap-6">
+      <CardContent className="gap-6">
         {/* Month and Year Selection */}
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -133,17 +133,15 @@ export function FileUploadZone({ onFileSelect, isLoading = false }: FileUploadZo
             </div>
             <Button
               onClick={() => fileInputRef.current?.click()}
-              color="primary"
-              variant="solid"
+              variant="default"
               className="mt-2"
-              isLoading={isLoading}
               disabled={isLoading}
             >
               Browse Files
             </Button>
           </div>
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }

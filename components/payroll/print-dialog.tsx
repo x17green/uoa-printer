@@ -2,16 +2,14 @@
 
 import { useState } from 'react';
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Radio,
-  RadioGroup,
-  Input,
-} from '@heroui/react';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Input } from '@/components/ui/input';
 
 interface PrintDialogProps {
   isOpen: boolean;
@@ -41,35 +39,40 @@ export function PrintDialog({
       onClose();
     } catch (error) {
       console.error('Print action failed', error);
-      // could use toast here
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
-      <ModalContent>
-        <ModalHeader className="flex flex-col gap-2 bg-primary text-primary-foreground">
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent>
+        <DialogHeader>
           <h2 className="text-2xl font-bold">Print Payslips</h2>
-          <p className="text-sm text-primary-foreground/80">
-            Choose delivery target and output style. PDF uses latest React PDF rendering.
+          <p className="text-sm text-muted-foreground">
+            Choose delivery target and output style. PDF generation is recommended.
           </p>
-        </ModalHeader>
+        </DialogHeader>
 
-        <ModalBody className="grid gap-6 py-6">
+        <div className="space-y-6 p-4">
           <div className="rounded-lg border border-border p-4 bg-slate-50">
             <p className="text-sm font-semibold mb-2">1. Select mode</p>
             <RadioGroup value={printType} onValueChange={(value) => setPrintType(value as 'all' | 'single')}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <Radio value="all" className="rounded-lg border p-3">
-                  <p className="font-semibold">All Payslips</p>
+                <label className="rounded-lg border p-3 cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="all" />
+                    <span className="font-semibold">All Payslips</span>
+                  </div>
                   <p className="text-xs text-muted-foreground">{totalRecords} records</p>
-                </Radio>
-                <Radio value="single" className="rounded-lg border p-3">
-                  <p className="font-semibold">Single Payslip</p>
+                </label>
+                <label className="rounded-lg border p-3 cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="single" />
+                    <span className="font-semibold">Single Payslip</span>
+                  </div>
                   <p className="text-xs text-muted-foreground">One employee only</p>
-                </Radio>
+                </label>
               </div>
             </RadioGroup>
           </div>
@@ -78,12 +81,12 @@ export function PrintDialog({
             <div className="rounded-lg border border-border p-4">
               <p className="text-sm font-semibold mb-2">Employee Filter</p>
               <Input
-                label="Staff Number"
-                placeholder="e.g., ADJO0000"
                 value={staffNumber}
-                onValueChange={setStaffNumber}
-                description="Use exact staff number to print one record"
+                onChange={(e) => setStaffNumber(e.target.value)}
+                placeholder="e.g., ADJO0000"
+                className="w-full"
               />
+              <p className="text-xs text-muted-foreground">Use exact staff number to print one record</p>
             </div>
           )}
 
@@ -91,14 +94,20 @@ export function PrintDialog({
             <p className="text-sm font-semibold mb-2">2. Choose output</p>
             <RadioGroup value={format} onValueChange={(value) => setFormat(value as 'html' | 'pdf')}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                <Radio value="html" className="rounded-lg border p-3">
-                  <p className="font-semibold">HTML</p>
+                <label className="rounded-lg border p-3 cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="html" />
+                    <span className="font-semibold">HTML</span>
+                  </div>
                   <p className="text-xs text-muted-foreground">Preview then print from browser</p>
-                </Radio>
-                <Radio value="pdf" className="rounded-lg border p-3">
-                  <p className="font-semibold">PDF (recommended)</p>
-                  <p className="text-xs text-muted-foreground">Download generated PDF</p>
-                </Radio>
+                </label>
+                <label className="rounded-lg border p-3 cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    <RadioGroupItem value="pdf" />
+                    <span className="font-semibold">PDF (recommended)</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Download generated file</p>
+                </label>
               </div>
             </RadioGroup>
           </div>
@@ -106,25 +115,20 @@ export function PrintDialog({
           <div className="rounded-lg border border-border p-4">
             <p className="text-sm font-semibold">3. Next action</p>
             <p className="text-xs text-muted-foreground">
-              Press continue to generate the selected output. The job is processed in-memory.
+              Continue to generate selected output. This will close the dialog.
             </p>
           </div>
-        </ModalBody>
+        </div>
 
-        <ModalFooter className="gap-2">
-          <Button color="default" variant="light" onPress={onClose} disabled={isLoading}>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose} disabled={isLoading}>
             Close
           </Button>
-          <Button
-            color="primary"
-            onPress={handlePrint}
-            disabled={isLoading || (printType === 'single' && !staffNumber)}
-            isLoading={isLoading}
-          >
+          <Button variant="default" onClick={handlePrint} disabled={isLoading || (printType === 'single' && !staffNumber)}>
             {format === 'html' ? 'Open HTML Preview' : 'Download PDF'}
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
