@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/react';
+import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from '@/components/ui/table';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
 import { Button } from '@/components/ui/button';
@@ -109,13 +109,15 @@ export default function PayrollRunsPage() {
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableColumn>Period</TableColumn>
-                  <TableColumn>Records</TableColumn>
-                  <TableColumn>Status</TableColumn>
-                  <TableColumn>Uploaded</TableColumn>
-                  <TableColumn>Processed</TableColumn>
-                  <TableColumn>Notes</TableColumn>
-                  <TableColumn>Actions</TableColumn>
+                  <TableRow>
+                    <TableHead>Period</TableHead>
+                    <TableHead>Records</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Uploaded</TableHead>
+                    <TableHead>Processed</TableHead>
+                    <TableHead>Notes</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredRuns.map((run) => (

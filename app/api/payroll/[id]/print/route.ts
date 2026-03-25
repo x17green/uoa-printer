@@ -5,7 +5,7 @@ import {
   generatePayslipHTML,
   generateBulkPayslipsHTML,
 } from "@/lib/payslip-generator";
-import { createPayslipPdfDocument } from '@/components/payroll/payslip-pdf';
+import { createPayslipPdfDocument } from '@/lib/payslip-pdf';
 import prisma from "@/lib/prisma";
 import type { PayslipData } from "@/lib/payslip-generator";
 import type { DocumentProps } from '@react-pdf/renderer';

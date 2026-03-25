@@ -280,8 +280,8 @@ export default function Dashboard() {
             <Alert
               color="danger"
               title="Error"
-              description={error}
-              onClose={() => setError(null)}
+              // description={error}
+              // onClose={() => setError(null)}
             />
           )}
 
@@ -293,18 +293,18 @@ export default function Dashboard() {
               <div className="flex flex-wrap gap-2">
                 <Button
                   color="secondary"
-                  onPress={() =>
+                  onClick={() =>
                     handleFileSelect(lastUpload.file, lastUpload.month, lastUpload.year, {
                       force: true,
                     })
                   }
-                  isLoading={isLoading}
+                  disabled={isLoading}
                 >
                   Overwrite existing run
                 </Button>
                 <Button
                   color="secondary"
-                  onPress={() => setExistingRunId(null)}
+                  onClick={() => setExistingRunId(null)}
                   disabled={isLoading}
                 >
                   Cancel
@@ -345,16 +345,15 @@ export default function Dashboard() {
                   Print Payslips
                 </Button>
                 <Button
-                  onPress={() => window.open('/api/payroll/template', '_blank')}
+                  onClick={() => window.open('/api/payroll/template', '_blank')}
                   className="gap-2"
                 >
                   Download Template
                 </Button>
                 <Button
                   color="secondary"
-                  onPress={downloadAnnotatedTemplate}
-                  isLoading={isAnnotating}
-                  disabled={!lastUpload || validationErrors.length === 0}
+                  onClick={downloadAnnotatedTemplate}
+                  disabled={isAnnotating || !lastUpload || validationErrors.length === 0}
                   className="gap-2"
                 >
                   Download Annotated Template

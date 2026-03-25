@@ -1,15 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Chip,
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '@heroui/react';
+import { Chip } from '@heroui/react';
+import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from '@/components/ui/table';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -81,15 +74,17 @@ export function ValidationErrorsModal({ errors, totalRecords }: ValidationErrors
                 <div className="h-[calc(100%-10rem)] overflow-auto pt-2 px-2">
                   <Table aria-label="Validation errors">
                     <TableHeader>
-                      <TableColumn>TYPE</TableColumn>
-                      <TableColumn>SHEET</TableColumn>
-                      <TableColumn>ROW</TableColumn>
-                      <TableColumn>STAFF NO</TableColumn>
-                      <TableColumn>STAFF NAME</TableColumn>
-                      <TableColumn>MESSAGE</TableColumn>
-                      <TableColumn>SEVERITY</TableColumn>
-                    </TableHeader>
-                    <TableBody>
+                    <TableRow>
+                      <TableHead>TYPE</TableHead>
+                      <TableHead>SHEET</TableHead>
+                      <TableHead>ROW</TableHead>
+                      <TableHead>STAFF NO</TableHead>
+                      <TableHead>STAFF NAME</TableHead>
+                      <TableHead>MESSAGE</TableHead>
+                      <TableHead>SEVERITY</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                       {filteredErrors.map((error, idx) => (
                         <TableRow key={`${error.type}-${idx}`}>
                           <TableCell className="font-mono text-xs">{error.type}</TableCell>

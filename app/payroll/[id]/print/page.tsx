@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Alert } from '@/components/ui/alert';
@@ -22,8 +22,10 @@ interface PayrollRun {
   records: PayoutRecord[];
 }
 
-export default function PayrollRunPrintPage({ params }: { params: { id: string } }) {
+export default function PayrollRunPrintPage() {
   const router = useRouter();
+  const params = useParams();
+  const payrollId = params?.id;
   const [run, setRun] = useState<PayrollRun | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,11 +33,17 @@ export default function PayrollRunPrintPage({ params }: { params: { id: string }
 
   useEffect(() => {
     async function loadRun() {
+      if (!payrollId) {
+        setError('Payroll ID is missing');
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       setError(null);
 
       try {
-        const res = await fetch(`/api/payroll/${params.id}`);
+        const res = await fetch(`/api/payroll/${payrollId}`);
         const data = await res.json();
         if (!res.ok || !data.success || !data.payrollRun) {
           setError(data.error || 'Payroll run could not be loaded');

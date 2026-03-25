@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { ValidationErrorsModal } from '@/components/payroll/validation-errors-modal';
+import { PayrollRecordsTable } from '@/components/payroll/payroll-records-table';
+import type { ValidationError as ParserValidationError } from '@/lib/excel-parser';
 
 interface PayrollRecord {
   id: string;
@@ -14,6 +16,7 @@ interface PayrollRecord {
   grossPay: string;
   totalDeductions: string;
   netPay: string;
+  status: string;
   employee: {
     staffNumber: string;
     fullName: string;
@@ -21,13 +24,7 @@ interface PayrollRecord {
   };
 }
 
-interface ValidationError {
-  type: string;
-  staffNumber?: string;
-  staffName?: string;
-  message: string;
-  severity: 'ERROR' | 'WARNING';
-}
+type ValidationError = ParserValidationError;
 
 interface PayrollRun {
   id: string;
@@ -37,16 +34,25 @@ interface PayrollRun {
   records: PayrollRecord[];
 }
 
-export default function PayrollRunPage({ params }: { params: { id: string } }) {
+export default function PayrollRunPage() {
   const router = useRouter();
+  const params = useParams();
+  const payrollId = params?.id;
+
   const [run, setRun] = useState<PayrollRun | null>(null);
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!payrollId) {
+      setError('Payroll ID is missing');
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
-    fetch(`/api/payroll/${params.id}`)
+    fetch(`/api/payroll/${payrollId}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.success) {
@@ -60,7 +66,7 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
         setError(err?.message || 'Unknown error');
       })
       .finally(() => setLoading(false));
-  }, [params.id]);
+  }, [payrollId]);
 
   if (loading) {
     return (
@@ -121,7 +127,8 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
             </Link>
             <Button
               size="sm"
-              onClick={() => router.push(`/payroll/${run.id}/print`)}
+              onClick={() => router.push(`/payroll/${payrollId}/print`)}
+              disabled={!payrollId}
             >
               Open Print Workflow
             </Button>
@@ -129,85 +136,16 @@ export default function PayrollRunPage({ params }: { params: { id: string } }) {
         </div>
 
         {errors.length > 0 && (
-          <Card>
-            <CardHeader className="bg-yellow-600 text-white">
-              <div className="text-lg font-semibold">Validation Issues</div>
-              <div className="text-sm opacity-90">
-                {errors.filter((e) => e.severity === 'ERROR').length} errors,{' '}
-                {errors.filter((e) => e.severity === 'WARNING').length} warnings
-              </div>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableColumn>Type</TableColumn>
-                  <TableColumn>Staff</TableColumn>
-                  <TableColumn>Message</TableColumn>
-                  <TableColumn>Severity</TableColumn>
-                </TableHeader>
-                <TableBody>
-                  {errors.map((err, idx) => (
-                    <TableRow key={idx}>
-                      <TableCell>{err.type}</TableCell>
-                      <TableCell>
-                        {err.staffNumber || '—'}
-                        <br />
-                        <span className="text-xs text-muted-foreground">{err.staffName || ''}</span>
-                      </TableCell>
-                      <TableCell>{err.message}</TableCell>
-                      <TableCell>
-                        <span className={err.severity === 'ERROR' ? 'text-red-600' : 'text-orange-600'}>
-                          {err.severity}
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+          <ValidationErrorsModal errors={errors} totalRecords={run.records.length} />
         )}
 
-        <Card>
-          <CardHeader>
-            <div className="text-lg font-semibold">Records</div>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableColumn>Staff</TableColumn>
-                <TableColumn>Gross</TableColumn>
-                <TableColumn>Deductions</TableColumn>
-                <TableColumn>Net</TableColumn>
-                <TableColumn>Actions</TableColumn>
-              </TableHeader>
-              <TableBody>
-                {run.records.map((record) => (
-                  <TableRow key={record.id}>
-                    <TableCell>
-                      <div className="font-mono text-sm">{record.employee.staffNumber}</div>
-                      <div>{record.employee.fullName}</div>
-                      <div className="text-xs text-muted-foreground">{record.employee.department}</div>
-                    </TableCell>
-                    <TableCell className="text-right">{record.grossPay}</TableCell>
-                    <TableCell className="text-right">{record.totalDeductions}</TableCell>
-                    <TableCell className="text-right">{record.netPay}</TableCell>
-                    <TableCell>
-                      <Button
-                        size="sm"
-                        onClick={() =>
-                          router.push(`/payroll/${run.id}/print?staffNumber=${record.employee.staffNumber}`)
-                        }
-                      >
-                        Payslip
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+        <PayrollRecordsTable
+          records={run.records}
+          onPayslipRequest={(staffNumber) => {
+            if (!payrollId) return;
+            router.push(`/payroll/${payrollId}/print?staffNumber=${encodeURIComponent(staffNumber)}`);
+          }}
+        />
       </main>
     </div>
   );

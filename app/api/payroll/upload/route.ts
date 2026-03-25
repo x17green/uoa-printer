@@ -100,15 +100,42 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const payrollRun = await prisma.payrollRun.create({
-      data: {
-        month,
-        year,
-        status: "PENDING",
-        notes: `Uploaded from ${file.name}`,
-        totalRecords: parseResult.employees.length,
-      },
-    });
+    let payrollRun;
+
+    try {
+      payrollRun = await prisma.payrollRun.create({
+        data: {
+          month,
+          year,
+          status: "PENDING",
+          notes: `Uploaded from ${file.name}`,
+          totalRecords: parseResult.employees.length,
+        },
+      });
+    } catch (createError) {
+      const errorData = createError as any;
+      if (
+        errorData?.code === "P2002" &&
+        Array.isArray(errorData?.meta?.target) &&
+        errorData.meta.target.includes("month") &&
+        errorData.meta.target.includes("year")
+      ) {
+        const duplicatedRun = await prisma.payrollRun.findFirst({
+          where: { month, year },
+        });
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: `Payroll run for ${month}/${year} already exists`,
+            runId: duplicatedRun?.id,
+          },
+          { status: 409 },
+        );
+      }
+
+      throw createError;
+    }
 
     // Process the payroll run in the background so the request returns quickly
     void (async () => {

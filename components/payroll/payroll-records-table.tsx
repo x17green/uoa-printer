@@ -1,6 +1,6 @@
 'use client';
 
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/react';
+import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from '@/components/ui/table';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
@@ -21,9 +21,10 @@ interface PayrollRecord {
 
 interface PayrollRecordsTableProps {
   records: PayrollRecord[];
+  onPayslipRequest?: (staffNumber: string) => void;
 }
 
-export function PayrollRecordsTable({ records }: PayrollRecordsTableProps) {
+export function PayrollRecordsTable({ records, onPayslipRequest }: PayrollRecordsTableProps) {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   const pages = Math.ceil(records.length / itemsPerPage);
@@ -51,13 +52,15 @@ export function PayrollRecordsTable({ records }: PayrollRecordsTableProps) {
       <CardContent className="gap-4">
         <Table aria-label="Payroll records">
           <TableHeader>
-            <TableColumn>STAFF NUMBER</TableColumn>
-            <TableColumn>NAME</TableColumn>
-            <TableColumn className="text-right">BASIC SALARY</TableColumn>
-            <TableColumn className="text-right">GROSS PAY</TableColumn>
-            <TableColumn className="text-right">DEDUCTIONS</TableColumn>
-            <TableColumn className="text-right">NET PAY</TableColumn>
-            <TableColumn>STATUS</TableColumn>
+            <TableRow>
+              <TableHead>STAFF NUMBER</TableHead>
+              <TableHead>NAME</TableHead>
+              <TableHead className="text-right">BASIC SALARY</TableHead>
+              <TableHead className="text-right">GROSS PAY</TableHead>
+              <TableHead className="text-right">DEDUCTIONS</TableHead>
+              <TableHead className="text-right">NET PAY</TableHead>
+              <TableHead>STATUS</TableHead>
+            </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedRecords.map((record) => (
@@ -74,9 +77,20 @@ export function PayrollRecordsTable({ records }: PayrollRecordsTableProps) {
                 <TableCell className="text-right text-danger">{formatCurrency(record.totalDeductions)}</TableCell>
                 <TableCell className="text-right font-bold text-primary">{formatCurrency(record.netPay)}</TableCell>
                 <TableCell>
-                  <span className="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                    {record.status}
-                  </span>
+                  <div className="flex flex-col gap-2">
+                    <span className="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      {record.status}
+                    </span>
+                    {onPayslipRequest && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => onPayslipRequest(record.employee.staffNumber)}
+                      >
+                        Payslip
+                      </Button>
+                    )}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

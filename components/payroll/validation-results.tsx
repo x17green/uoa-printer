@@ -1,6 +1,8 @@
 'use client';
 
-import { Card, CardBody, CardHeader, Chip, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@heroui/react';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from '@/components/ui/table';
+import { Chip } from '@heroui/react';
 import type { ValidationError } from '@/lib/excel-parser';
 
 interface ValidationResultsProps {
@@ -18,7 +20,7 @@ export function ValidationResults({ errors, totalRecords }: ValidationResultsPro
             <p className="text-sm opacity-90">{totalRecords} records ready for processing</p>
           </div>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <div className="flex items-center justify-center py-8">
             <div className="text-center">
               <svg className="w-16 h-16 text-green-600 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
@@ -31,7 +33,7 @@ export function ValidationResults({ errors, totalRecords }: ValidationResultsPro
               <p className="text-foreground font-semibold">All records are valid</p>
             </div>
           </div>
-        </CardBody>
+        </CardContent>
       </Card>
     );
   }
@@ -53,14 +55,16 @@ export function ValidationResults({ errors, totalRecords }: ValidationResultsPro
           {warningCount > 0 && <Chip color="warning" size="sm">{warningCount} Warnings</Chip>}
         </div>
       </CardHeader>
-      <CardBody>
+      <CardContent>
         <Table aria-label="Validation errors">
           <TableHeader>
-            <TableColumn>TYPE</TableColumn>
-            <TableColumn>SHEET / ROW</TableColumn>
-            <TableColumn>STAFF</TableColumn>
-            <TableColumn>MESSAGE</TableColumn>
-            <TableColumn>SEVERITY</TableColumn>
+            <TableRow>
+              <TableHead>TYPE</TableHead>
+              <TableHead>SHEET / ROW</TableHead>
+              <TableHead>STAFF</TableHead>
+              <TableHead>MESSAGE</TableHead>
+              <TableHead>SEVERITY</TableHead>
+            </TableRow>
           </TableHeader>
           <TableBody>
             {errors.map((error, idx) => (
@@ -89,7 +93,7 @@ export function ValidationResults({ errors, totalRecords }: ValidationResultsPro
                   <Chip
                     color={error.severity === 'ERROR' ? 'danger' : 'warning'}
                     size="sm"
-                    variant="flat"
+                    variant="soft"
                   >
                     {error.severity}
                   </Chip>
@@ -98,7 +102,7 @@ export function ValidationResults({ errors, totalRecords }: ValidationResultsPro
             ))}
           </TableBody>
         </Table>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }
